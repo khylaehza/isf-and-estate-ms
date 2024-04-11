@@ -16,6 +16,9 @@ export const CusLogInput = ({
     value,
     onChange,
     type = "text",
+    endAdornment,
+    onBlur,
+    touch,
 }) => {
     return (
         <Box
@@ -34,19 +37,17 @@ export const CusLogInput = ({
             </InputLabel>
             <FormControl
                 required={required}
-                error={error}
+                error={error && touch != undefined}
                 variant="standard"
                 fullWidth
             >
                 <Input
                     name={name}
-                    placeholder={`${placeholder}`}
-                    aria-describedby={`${name}-error`}
+                    placeholder={placeholder}
                     variant="filled"
-                    disableUnderline
+                    // disableUnderline
                     fullWidth
                     width="100%"
-                    id={`${name}`}
                     sx={{
                         bgcolor: "#FFF",
                         borderRadius: 2,
@@ -55,18 +56,37 @@ export const CusLogInput = ({
                         boxShadow: "0 0 8px rgba(28, 48, 85, 0.3)",
                         textAlign: "left",
                         fontSize: 12,
+                        ":before": {
+                            borderBottomColor: "#4C6085",
+                            borderRadius: 2,
+                        },
+                        ":after": {
+                            display: "none",
+                        },
                     }}
                     startAdornment={
                         <InputAdornment position="start">
                             {adornment}
                         </InputAdornment>
                     }
+                    endAdornment={
+                        <InputAdornment position="end">
+                            {endAdornment}
+                        </InputAdornment>
+                    }
                     type={type}
                     onChange={onChange}
                     value={value}
+                    onBlur={onBlur}
                 />
 
-                <FormHelperText id={`${name}-error`}>{error}</FormHelperText>
+                {error && touch ? (
+                    <FormHelperText sx={{ fontSize: 11 }}>
+                        {error}
+                    </FormHelperText>
+                ) : (
+                    <></>
+                )}
             </FormControl>
         </Box>
     );
@@ -81,6 +101,8 @@ export const CusFormInput = ({
     type = "text",
     value,
     onChange,
+    onBlur,
+    touch,
 }) => {
     return (
         <Box
@@ -103,20 +125,18 @@ export const CusFormInput = ({
             </InputLabel>
             <FormControl
                 required={required}
-                error={error}
+                error={error && touch != undefined}
                 variant="standard"
                 fullWidth
             >
                 <Input
                     name={name}
                     placeholder={`${placeholder}`}
-                    aria-describedby={`${name}-error`}
                     variant="filled"
                     disableUnderline
                     fullWidth
                     width="100%"
                     type={type}
-                    id={`${name}`}
                     sx={{
                         bgcolor: "#FFF",
                         borderRadius: 2,
@@ -130,9 +150,14 @@ export const CusFormInput = ({
                     }}
                     onChange={onChange}
                     value={value}
+                    onBlur={onBlur}
                 />
 
-                <FormHelperText id={`${name}-error`}>{error}</FormHelperText>
+                {error && touch ? (
+                    <FormHelperText>{error}</FormHelperText>
+                ) : (
+                    <></>
+                )}
             </FormControl>
         </Box>
     );

@@ -11,6 +11,8 @@ axiosClient.interceptors.request.use((config) => {
 });
 
 axiosClient.interceptors.response.use((response) => {
-    if (response.status == 200) return response.data;
+    if (response.status == 200 || response.status == 201) {
+        return response;
+    }
 });
 export default axiosClient;

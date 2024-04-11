@@ -16,7 +16,19 @@ import {
     EditRounded,
     DeleteRounded,
 } from "@mui/icons-material";
-const CusTable = ({ rows, columns }) => {
+import CusAlert from "./CusAlert";
+import CusModal from "./CusModal";
+const CusTable = ({
+    rows,
+    columns,
+    editForm,
+    editFormLayout,
+    setOpenEdit,
+    setCurRow,
+    curRow,
+}) => {
+    const [delOpen, setDelOpen] = useState(false);
+    const [curDelRow, setCurDelRow] = useState();
     const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(4);
 
@@ -28,6 +40,7 @@ const CusTable = ({ rows, columns }) => {
         setRowsPerPage(+event.target.value);
         setPage(0);
     };
+
     return (
         <Paper
             sx={{
@@ -117,6 +130,10 @@ const CusTable = ({ rows, columns }) => {
                                                     color="#ccdace"
                                                     w={24}
                                                     h={24}
+                                                    action={() => {
+                                                        setOpenEdit(true);
+                                                        setCurRow(row);
+                                                    }}
                                                     icon={
                                                         <EditRounded
                                                             sx={{
@@ -131,6 +148,10 @@ const CusTable = ({ rows, columns }) => {
                                                     color="#eaa196"
                                                     w={24}
                                                     h={24}
+                                                    action={() => {
+                                                        setDelOpen(true);
+                                                        setCurDelRow(row.id);
+                                                    }}
                                                     icon={
                                                         <DeleteRounded
                                                             sx={{
@@ -158,6 +179,8 @@ const CusTable = ({ rows, columns }) => {
                 onPageChange={handleChangePage}
                 onRowsPerPageChange={handleChangeRowsPerPage}
             />
+            <CusAlert setOpen={setDelOpen} open={delOpen} id={curDelRow} />
+            {editFormLayout}
         </Paper>
     );
 };

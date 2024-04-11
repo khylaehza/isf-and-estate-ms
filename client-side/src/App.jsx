@@ -12,7 +12,7 @@ function App() {
         components: {
             MuiFormLabel: {
                 styleOverrides: {
-                    asterisk: { color: "#F9806D", fontWeight: "normal" },
+                    asterisk: { color: "#BB0406", fontWeight: "normal" },
                 },
             },
             MuiSelect: {

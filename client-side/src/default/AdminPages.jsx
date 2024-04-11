@@ -5,23 +5,19 @@ import { HomePage } from "../pages";
 import { useEffect } from "react";
 import axiosClient from "../axiosClient";
 const AdminPages = () => {
-    const { user, token, setToken, setUser } = useData();
+    const { curUser, token, setToken, setCurUser } = useData();
     const location = useLocation();
+
     if (!token) {
         return <Navigate to={"/login"} />;
     }
-    useEffect(() => {
-        axiosClient.get("/profile").then(({ data }) => {
-            setUser(data);
-        });
-    }, []);
 
     return (
         <>
-            {user && (
+            {curUser && (
                 <SideNav
-                    user={user}
-                    setUser={setUser}
+                    curUser={curUser}
+                    setCurUser={setCurUser}
                     setToken={setToken}
                     children={
                         location.pathname === "/" ? <HomePage /> : <Outlet />

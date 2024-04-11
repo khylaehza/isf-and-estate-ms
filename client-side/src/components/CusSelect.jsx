@@ -9,6 +9,7 @@ const CusSelect = ({
     items,
     onChange,
     value,
+    touch,
 }) => {
     return (
         <Box
@@ -26,7 +27,11 @@ const CusSelect = ({
                 {label}
             </InputLabel>
 
-            <FormControl required={required} error={error} fullWidth>
+            <FormControl
+                required={required}
+                error={error && touch != undefined}
+                fullWidth
+            >
                 <Select
                     name={name}
                     value={value || ""}

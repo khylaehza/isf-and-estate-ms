@@ -1,19 +1,26 @@
 import { Button, IconButton } from "@mui/material";
 
-export const CusPrimBtn = ({ label, action, type }) => {
+export const CusPrimBtn = ({
+    label,
+    action,
+    type,
+    color = "#4C6085",
+    hover = "#3C4D6C",
+}) => {
     return (
         <>
             <Button
                 variant={"contained"}
                 sx={{
-                    backgroundColor: "#4C6085",
+                    backgroundColor: color,
                     "&:hover": {
-                        backgroundColor: "#3C4D6C",
+                        backgroundColor: hover,
                     },
                     fontWeight: "bold",
                 }}
                 onClick={action}
                 type={type}
+                // fullWidth
             >
                 {label}
             </Button>
@@ -21,19 +28,19 @@ export const CusPrimBtn = ({ label, action, type }) => {
     );
 };
 
-export const CusSecBtn = ({ label, action, type }) => {
+export const CusSecBtn = ({ label, action, type, color = "#4C6085" }) => {
     return (
         <>
             <Button
                 variant={"outlined"}
                 sx={{
-                    borderColor: "#4C6085",
+                    borderColor: color,
                     "&:hover": {
                         backgroundColor: "#EFF1F4",
                         borderColor: "#4C6085",
                     },
                     fontWeight: "bold",
-                    color: "#4C6085",
+                    color: color,
                 }}
                 onClick={action}
                 type={type}
@@ -73,5 +80,33 @@ export const CusIconBtn = ({
         >
             {icon}
         </IconButton>
+    );
+};
+
+export const CusThirdBtn = ({ label, action, type }) => {
+    return (
+        <>
+            <Button
+                variant={"link"}
+                sx={{
+                    "&:hover": {
+                        backgroundColor: "#E0EBF2",
+                        borderColor: "#4C6085",
+                        fontWeight: "bold",
+                    },
+                    fontWeight: "medium",
+                    color: "#4C6085",
+
+                    fontSize: 11,
+                    width: 130,
+                    textTransform: "inherit",
+                }}
+                onClick={action}
+                type={type}
+                fullWidth={false}
+            >
+                {label}
+            </Button>
+        </>
     );
 };

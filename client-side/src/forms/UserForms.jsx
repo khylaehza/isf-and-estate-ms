@@ -1,110 +1,150 @@
 import { Grid } from "@mui/material";
-import { CusFormInput, CusSelect } from "../components";
-
-const UserForms = ({ form, handleInput }) => {
+import { CusFormInput, CusSelect, CusModal } from "../components";
+const UserForms = ({ label, form, open, setOpen, action, method }) => {
     const roleList = ["Super Admin", "Admin", "ISF Admin", "Estate Admin"];
     const depList = ["DILG Manila", "Dep1", "Dep2"];
     return (
-        <Grid
-            container
-            spacing={{ xs: 2, md: 3 }}
-            columns={{ xs: 1, sm: 8, md: 12 }}
-        >
-            <Grid item xs={2} sm={4} md={4}>
-                <CusFormInput
-                    name="fname"
-                    label="Given Name"
-                    required={true}
-                    placeholder={"Juan"}
-                    value={form.fname}
-                    onChange={handleInput}
-                />
-            </Grid>
-            <Grid item xs={2} sm={4} md={4}>
-                <CusFormInput
-                    name="mname"
-                    label="Middle Name"
-                    required={true}
-                    placeholder={"Rizal"}
-                    value={form.mname}
-                    onChange={handleInput}
-                />
-            </Grid>
-            <Grid item xs={2} sm={4} md={4}>
-                <CusFormInput
-                    name="lname"
-                    label="Last Name"
-                    required={true}
-                    placeholder={"Dela Cruz"}
-                    value={form.lname}
-                    onChange={handleInput}
-                />
-            </Grid>
-            <Grid item xs={2} sm={4} md={4}>
-                <CusFormInput
-                    name="uname"
-                    label="Username"
-                    required={true}
-                    placeholder={"Juan"}
-                    value={form.uname}
-                    onChange={handleInput}
-                />
-            </Grid>
-            <Grid item xs={2} sm={4} md={4}>
-                <CusSelect
-                    name="role"
-                    label="Role"
-                    required={true}
-                    value={form.role}
-                    onChange={handleInput}
-                    items={roleList}
-                />
-            </Grid>
-            <Grid item xs={2} sm={4} md={4}>
-                <CusSelect
-                    name="department"
-                    label="Department"
-                    required={true}
-                    value={form.department}
-                    onChange={handleInput}
-                    items={depList}
-                />
-            </Grid>
+        <CusModal
+            label={label}
+            setOpen={setOpen}
+            open={open}
+            form={form}
+            action={action}
+            method={method}
+            addFormLayout={
+                <Grid
+                    container
+                    spacing={{ xs: 2, md: 3 }}
+                    columns={{ xs: 1, sm: 8, md: 12 }}
+                >
+                    <Grid item xs={2} sm={4} md={4}>
+                        <CusFormInput
+                            name="fname"
+                            label="Given Name"
+                            required={true}
+                            placeholder={"Juan"}
+                            value={form.values.fname}
+                            onChange={form.handleChange}
+                            onBlur={form.handleBlur}
+                            error={form.errors.fname}
+                            touch={form.touched.fname}
+                        />
+                    </Grid>
+                    <Grid item xs={2} sm={4} md={4}>
+                        <CusFormInput
+                            name="mname"
+                            label="Middle Name"
+                            required={false}
+                            placeholder={"Rizal"}
+                            value={form.values.mname}
+                            onChange={form.handleChange}
+                            onBlur={form.handleBlur}
+                            touch={form.touched.mname}
+                        />
+                    </Grid>
+                    <Grid item xs={2} sm={4} md={4}>
+                        <CusFormInput
+                            name="lname"
+                            label="Last Name"
+                            required={true}
+                            placeholder={"Dela Cruz"}
+                            value={form.values.lname}
+                            onChange={form.handleChange}
+                            onBlur={form.handleBlur}
+                            error={form.errors.lname}
+                            touch={form.touched.lname}
+                        />
+                    </Grid>
+                    <Grid item xs={2} sm={4} md={4}>
+                        <CusFormInput
+                            name="uname"
+                            label="Username"
+                            required={true}
+                            placeholder={"Juan"}
+                            value={form.values.uname}
+                            onChange={form.handleChange}
+                            onBlur={form.handleBlur}
+                            error={form.errors.uname}
+                            touch={form.touched.uname}
+                        />
+                    </Grid>
+                    <Grid item xs={2} sm={4} md={4}>
+                        <CusSelect
+                            name="role"
+                            label="Role"
+                            required={true}
+                            value={form.values.role}
+                            onChange={form.handleChange}
+                            items={roleList}
+                            onBlur={form.handleBlur}
+                            error={form.errors.role}
+                            touch={form.touched.role}
+                        />
+                    </Grid>
+                    <Grid item xs={2} sm={4} md={4}>
+                        <CusSelect
+                            name="department"
+                            label="Department"
+                            required={true}
+                            value={form.values.department}
+                            onChange={form.handleChange}
+                            items={depList}
+                            onBlur={form.handleBlur}
+                            error={form.errors.department}
+                            touch={form.touched.department}
+                        />
+                    </Grid>
 
-            <Grid item xs={2} sm={4} md={4}>
-                <CusFormInput
-                    name="email"
-                    label="Email"
-                    required={true}
-                    value={form.email}
-                    onChange={handleInput}
-                    placeholder={"juan@gmail.com"}
-                />
-            </Grid>
+                    <Grid item xs={2} sm={4} md={4}>
+                        <CusFormInput
+                            name="email"
+                            label="Email"
+                            required={true}
+                            value={form.values.email}
+                            onChange={form.handleChange}
+                            placeholder={"juan@gmail.com"}
+                            onBlur={form.handleBlur}
+                            error={form.errors.email}
+                            touch={form.touched.email}
+                        />
+                    </Grid>
 
-            <Grid item xs={2} sm={4} md={4}>
-                <CusFormInput
-                    name="password"
-                    label="Password"
-                    required={true}
-                    placeholder={"•••••••"}
-                    type={"password"}
-                    value={form.pass}
-                    onChange={handleInput}
-                />
-            </Grid>
-            <Grid item xs={2} sm={4} md={4}>
-                <CusFormInput
-                    name="conpass"
-                    label="Confirm Password"
-                    required={true}
-                    placeholder={"•••••••"}
-                    type={"password"}
-                    value={form.conpass}
-                    onChange={handleInput}
-                />
-            </Grid>
-        </Grid>
+                    {method == "ADD" && (
+                        <>
+                            {" "}
+                            <Grid item xs={2} sm={4} md={4}>
+                                <CusFormInput
+                                    name="password"
+                                    label="Password"
+                                    required={true}
+                                    placeholder={"•••••••"}
+                                    type={"password"}
+                                    value={form.values.pass}
+                                    onChange={form.handleChange}
+                                    onBlur={form.handleBlur}
+                                    error={form.errors.pass}
+                                    touch={form.touched.pass}
+                                />
+                            </Grid>
+                            <Grid item xs={2} sm={4} md={4}>
+                                <CusFormInput
+                                    name="conpass"
+                                    label="Confirm Password"
+                                    required={true}
+                                    placeholder={"•••••••"}
+                                    type={"password"}
+                                    value={form.values.conpass}
+                                    onChange={form.handleChange}
+                                    onBlur={form.handleBlur}
+                                    error={form.errors.conpass}
+                                    touch={form.touched.conpass}
+                                />
+                            </Grid>
+                        </>
+                    )}
+                </Grid>
+            }
+        />
     );
 };
 

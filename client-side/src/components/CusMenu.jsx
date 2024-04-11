@@ -2,8 +2,7 @@ import { Menu, MenuItem, IconButton, Avatar } from "@mui/material";
 import { useState } from "react";
 import axiosClient from "../axiosClient";
 import { useNavigate } from "react-router-dom";
-const CusMenu = ({ setToken, setUser }) => {
-    const navigate = useNavigate();
+const CusMenu = ({ setToken, setCurUser }) => {
     const [anchorEl, setAnchorEl] = useState(null);
     const open = Boolean(anchorEl);
     const handleClick = (event) => {
@@ -15,9 +14,9 @@ const CusMenu = ({ setToken, setUser }) => {
 
     const handleLogOut = () => {
         setAnchorEl(null);
-        axiosClient.get("/logout").then((data) => {
+        axiosClient.get("/logout").then(() => {
             setToken(null);
-            setUser(null);
+            setCurUser(null);
         });
     };
 

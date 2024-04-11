@@ -1,49 +1,69 @@
 import "../App.css";
-import { Container, Box, Stack, Divider, Typography } from "@mui/material";
-import mnllogo from "../assets/images/manilalogo.png";
-import { CusLogInput, CusPrimBtn } from "../components";
-import { PersonRounded, LockRounded } from "@mui/icons-material";
+import {
+    Container,
+    Box,
+    Stack,
+    Divider,
+    Typography,
+    IconButton,
+} from "@mui/material";
+import lgrclogo from "../assets/images/lgrclogo.png";
+import pilipinaslogo from "../assets/images/pilipinaslogo.png";
+import manilalogo from "../assets/images/manilalogo.png";
+import dilglogo from "../assets/images/dilglogo.png";
+import { CusLogInput, CusPrimBtn, CusThirdBtn } from "../components";
+import {
+    PersonRounded,
+    LockRounded,
+    VisibilityOffRounded,
+    VisibilityRounded,
+} from "@mui/icons-material";
 import { useData } from "../DataContext";
-import { Navigate, useNavigate } from "react-router-dom";
+import { Navigate } from "react-router-dom";
 import { useState } from "react";
 import axiosClient from "../axiosClient";
+
+import { useFormik } from "formik";
+import * as Yup from "yup";
+
 const LoginPage = () => {
-    const { user, token, setUser, setToken } = useData();
-    const navigate = useNavigate();
+    const { token, setToken } = useData();
+    const [showPassword, setShowPassword] = useState(false);
+    const [logError, setLogError] = useState("");
 
-    const [loginForm, setLoginForm] = useState({
-        uname: "",
-        password: "",
-    });
+    const handleClickShowPassword = () => setShowPassword((show) => !show);
 
-    const handleInput = (event) => {
-        const { name, value } = event.target;
-        setLoginForm({ ...loginForm, [name]: value });
-    };
-
-    const handleSubmit = (event) => {
+    const handleMouseDownPassword = (event) => {
         event.preventDefault();
-
-        axiosClient
-            .post("/login", loginForm)
-            .then((data) => {
-                if (data.status) {
-                    setToken(data.token);
-
-                    // if (token) {
-                    //     axiosClient.get("/profile").then((data) => {
-                    //         setUser(data);
-                    //         // navigate("/");
-                    //     });
-                    // }
-                } else {
-                    console.log(data.message);
-                }
-            })
-            .catch((error) => {
-                console.log(error);
-            });
     };
+
+    const form = useFormik({
+        initialValues: {
+            uname: "",
+            password: "",
+        },
+        validationSchema: Yup.object({
+            uname: Yup.string().required("Username is required."),
+            password: Yup.string().required("Password is required."),
+        }),
+        onSubmit: (value, actions) => {
+            setLogError("");
+            axiosClient
+                .post("/login", value)
+                .then((data) => {
+                    if (data.data.status) {
+                        setToken(data.data.token);
+                    } else {
+                        setLogError(data.data.message);
+                    }
+                })
+                .catch((error) => {
+                    console.log(error);
+                });
+
+            actions.resetForm();
+        },
+    });
     if (token != null) {
         return <Navigate to={"/"} />;
     }
@@ -70,10 +90,10 @@ const LoginPage = () => {
                 height={"100%"}
             >
                 <Box
-                    width={{ xs: 300, sm: 350, md: 400, lg: 450, xl: 500 }}
-                    my={4}
+                    width={{ xs: 300, sm: 350, md: 370, lg: 400 }}
                     display="flex"
-                    p={5}
+                    py={3}
+                    px={5}
                     alignItems="center"
                     flexDirection="column"
                     className="login-form"
@@ -87,72 +107,152 @@ const LoginPage = () => {
                             width="100%"
                             alignItems="center"
                             justifyContent="center"
-                            gap={{ xs: 2, sm: 0 }}
+                            alignContent={"center"}
+                            gap={{ xs: 2, sm: 3 }}
                         >
-                            <Box width="65%">
-                                <Typography
-                                    className="title-text"
-                                    fontSize="1.2rem"
-                                    fontWeight="bold"
-                                >
-                                    <span>
-                                        INFORMAL SETTLERS FAMILY DATABASE
-                                    </span>
-                                    <span> AND ESTATE MANAGEMENT SYSTEM</span>
-                                </Typography>
-                            </Box>
-                            <Box
-                                width="35%"
-                                display="flex"
-                                justifyContent="flex-end"
-                            >
-                                <img
-                                    src={mnllogo}
-                                    alt="Manila Logo"
-                                    height={80}
-                                    width={80}
+                            <img
+                                src={pilipinaslogo}
+                                alt="Bagong Pilipinas Logo"
+                                height={80}
+                            />
+                            <img
+                                src={manilalogo}
+                                alt="Manila Logo"
+                                height={70}
+                            />
+                        </Stack>
+                        <Divider width="101%" />
+                        <Typography
+                            className="title-text"
+                            fontSize="1.2rem"
+                            fontWeight="bold"
+                            textAlign={"center"}
+                        >
+                            <span>INFORMAL SETTLER </span>
+                            <span style={{ display: "inline-block" }}>
+                                FAMILIES DATABASE AND ESTATE
+                            </span>
+                            <span style={{ display: "inline-block" }}>
+                                MANAGEMENT SYSTEM
+                            </span>
+                        </Typography>
+
+                        <Divider width="101%" />
+                        <form onSubmit={form.handleSubmit}>
+                            <Stack gap={2}>
+                                <CusLogInput
+                                    name="uname"
+                                    label="Username"
+                                    required={true}
+                                    placeholder={"juandc"}
+                                    adornment={
+                                        <PersonRounded
+                                            sx={{
+                                                color: "#4C6085",
+                                                fontSize: 16,
+                                            }}
+                                        />
+                                    }
+                                    onChange={form.handleChange}
+                                    onBlur={form.handleBlur}
+                                    value={form.values.uname}
+                                    error={form.errors.uname}
+                                    touch={form.touched.uname}
                                 />
-                            </Box>
-                        </Stack>
-                        <>
-                            <Divider width="101%" />
-                        </>
-                        <Stack gap={3}>
-                            <CusLogInput
-                                name="uname"
-                                label="Username"
-                                required={true}
-                                placeholder={"juandc"}
-                                adornment={
-                                    <PersonRounded
-                                        sx={{
-                                            color: "#4C6085",
-                                            fontSize: 16,
-                                        }}
-                                    />
-                                }
-                                value={loginForm.username}
-                                onChange={handleInput}
-                            />
-                            <CusLogInput
-                                name="password"
-                                label="Password"
-                                required={true}
-                                placeholder={"•••••••"}
-                                adornment={
-                                    <LockRounded
-                                        sx={{
-                                            color: "#4C6085",
-                                            fontSize: 16,
-                                        }}
-                                    />
-                                }
-                                value={loginForm.password}
-                                onChange={handleInput}
-                                type={"password"}
-                            />
-                            <CusPrimBtn label="Login" action={handleSubmit} />
-                        </Stack>
+                                <CusLogInput
+                                    name="password"
+                                    label="Password"
+                                    required={true}
+                                    placeholder={"•••••••"}
+                                    adornment={
+                                        <LockRounded
+                                            sx={{
+                                                color: "#4C6085",
+                                                fontSize: 16,
+                                            }}
+                                        />
+                                    }
+                                    endAdornment={
+                                        <IconButton
+                                            onClick={handleClickShowPassword}
+                                            onMouseDown={
+                                                handleMouseDownPassword
+                                            }
+                                        >
+                                            {showPassword ? (
+                                                <VisibilityOffRounded
+                                                    sx={{
+                                                        color: "#4C6085",
+                                                        fontSize: 16,
+                                                    }}
+                                                />
+                                            ) : (
+                                                <VisibilityRounded
+                                                    sx={{
+                                                        color: "#4C6085",
+                                                        fontSize: 16,
+                                                    }}
+                                                />
+                                            )}
+                                        </IconButton>
+                                    }
+                                    value={form.values.password}
+                                    onChange={form.handleChange}
+                                    type={showPassword ? "text" : "password"}
+                                    error={form.errors.password}
+                                    touch={form.touched.password}
+                                    onBlur={form.handleBlur}
+                                />
+
+                                <CusPrimBtn label="Login" type="submit" />
+                                <Typography
+                                    fontSize={11}
+                                    fontWeight="thin"
+                                    textAlign={"center"}
+                                    color={"#BB0406"}
+                                    lineHeight={1}
+                                >
+                                    {form.touched.uname || form.touched.password
+                                        ? ""
+                                        : logError}
+                                </Typography>
+                                <Stack
+                                    flexDirection="row"
+                                    alignItems="center"
+                                    justifyContent="center"
+                                    gap={{ xs: 1 }}
+                                    mt={-2}
+                                >
+                                    <Stack
+                                        width={"70%"}
+                                        alignItems={"flex-end"}
+                                    >
+                                        <CusThirdBtn
+                                            label="Forgot Password?"
+                                            type="submit"
+                                        />
+                                    </Stack>
+                                    <Stack
+                                        width={"25%"}
+                                        flexDirection="row"
+                                        gap={1}
+                                        alignItems={"center"}
+                                        justifyContent={"flex-end"}
+                                    >
+                                        <img
+                                            src={dilglogo}
+                                            alt="DILG Logo"
+                                            height={35}
+                                        />
+                                        <img
+                                            src={lgrclogo}
+                                            alt="LGRC Logo"
+                                            height={40}
+                                        />
+                                    </Stack>
+                                </Stack>
+                            </Stack>
+                        </form>
                     </Stack>
                 </Box>
             </Box>

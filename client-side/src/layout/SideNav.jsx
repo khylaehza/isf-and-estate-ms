@@ -31,7 +31,7 @@ import {
     ExpandMoreRounded,
 } from "@mui/icons-material";
 import CusMenu from "../components/CusMenu";
-
+import { useNavigate } from "react-router-dom";
 const drawerWidth = 240;
 
 const openedMixin = (theme) => ({
@@ -121,7 +121,8 @@ const AppBarStyle = styled(AppBar, {
     }),
 }));
 
-const SideNav = ({ user, setUser, setToken, children }) => {
+const SideNav = ({ curUser, setCurUser, setToken, children }) => {
+    const navigate = useNavigate();
     const [open, setOpen] = useState(true);
     const theme = useTheme();
 
@@ -154,7 +155,7 @@ const SideNav = ({ user, setUser, setToken, children }) => {
                 {
                     name: "User",
                     action: () => {
-                        console.log("User");
+                        navigate("user");
                     },
                 },
                 {
@@ -279,14 +280,14 @@ const SideNav = ({ user, setUser, setToken, children }) => {
                                 fontSize={12}
                                 fontWeight={"bold"}
                             >
-                                {user.fname}
+                                {curUser.fname}
                             </Typography>
                             <Typography fontSize={10} noWrap component="div">
-                                {user.role}
+                                {curUser.role}
                             </Typography>
                         </Stack>
 
-                        <CusMenu setToken={setToken} setUser={setUser} />
+                        <CusMenu setToken={setToken} setCurUser={setCurUser} />
                     </Stack>
                 </Toolbar>
             </AppBarStyle>
@@ -314,7 +315,7 @@ const SideNav = ({ user, setUser, setToken, children }) => {
                             color={"#1C3055"}
                             fontWeight={"bold"}
                         >
-                            ISF’s AND ESTATE
+                            ISFs AND ESTATE
                         </Typography>
                         <Typography
                             fontSize={18}
