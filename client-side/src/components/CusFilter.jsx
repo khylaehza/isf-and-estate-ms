@@ -1,9 +1,9 @@
 import { useState } from "react";
 import { CusIconBtn } from "./CusButton";
 import { Menu, MenuItem, Fade, Typography, ListItemIcon } from "@mui/material";
-import { SwapVertOutlined, Check } from "@mui/icons-material";
+import { FilterAltOutlined, Check } from "@mui/icons-material";
 
-const CusSort = ({ setSortType, sortType }) => {
+const CusFilter = ({ filterBy, setCurFilter, curFilter }) => {
     const [anchorEl, setAnchorEl] = useState(null);
     const open = Boolean(anchorEl);
     const handleClick = (event) => {
@@ -15,16 +15,15 @@ const CusSort = ({ setSortType, sortType }) => {
     };
 
     const handleMenuItemClick = (by) => {
-        setSortType(by);
+        setCurFilter(by);
         setAnchorEl(null);
     };
 
-    const choice = ["Ascending", "Descending"];
     return (
         <>
             <CusIconBtn
                 icon={
-                    <SwapVertOutlined
+                    <FilterAltOutlined
                         sx={{ height: 20, width: 20, color: "#1C3055" }}
                     />
                 }
@@ -53,17 +52,17 @@ const CusSort = ({ setSortType, sortType }) => {
                         paddingBottom: 0.5,
                     }}
                 >
-                    By Name
+                    By Position
                 </Typography>
 
-                {choice.map((by, index) => (
+                {filterBy.map((by, index) => (
                     <MenuItem
                         key={index}
                         onClick={() => handleMenuItemClick(by)}
                         sx={{ fontSize: 12 }}
                     >
                         <ListItemIcon sx={{ marginRight: -1.5 }}>
-                            {by == sortType && <Check fontSize="12" />}
+                            {by == curFilter && <Check fontSize="12" />}
                         </ListItemIcon>
                         {by}
                     </MenuItem>
@@ -73,4 +72,4 @@ const CusSort = ({ setSortType, sortType }) => {
     );
 };
 
-export default CusSort;
+export default CusFilter;

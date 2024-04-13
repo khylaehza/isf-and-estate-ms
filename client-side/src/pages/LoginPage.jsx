@@ -31,9 +31,9 @@ const LoginPage = () => {
     const [showPassword, setShowPassword] = useState(false);
     const [logError, setLogError] = useState("");
 
-    const handleClickShowPassword = () => setShowPassword((show) => !show);
+    const handleShowPass = () => setShowPassword((show) => !show);
 
-    const handleMouseDownPassword = (event) => {
+    const handleMouseDown = (event) => {
         event.preventDefault();
     };
 
@@ -174,10 +174,8 @@ const LoginPage = () => {
                                     }
                                     endAdornment={
                                         <IconButton
-                                            onClick={handleClickShowPassword}
-                                            onMouseDown={
-                                                handleMouseDownPassword
-                                            }
+                                            onClick={handleShowPass}
+                                            onMouseDown={handleMouseDown}
                                         >
                                             {showPassword ? (
                                                 <VisibilityOffRounded

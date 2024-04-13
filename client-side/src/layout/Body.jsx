@@ -1,15 +1,13 @@
 import Header from "./Header";
-import SideNav from "./SideNav";
 import { Stack, Box } from "@mui/material";
 import {
     CusSearch,
-    CusIconBtn,
     CusPrimBtn,
     CusTable,
     CusSort,
+    CusFilter,
 } from "../components";
-import { FilterAltOutlined } from "@mui/icons-material";
-
+import { useState } from "react";
 const Body = ({
     module,
     number,
@@ -22,7 +20,15 @@ const Body = ({
     setOpenEdit,
     setCurRow,
     curRow,
+    setCurSearch,
+    curSearch,
+    setCurFilter,
+    filterBy,
+    curFilter,
+    viewFormLayout,
+    setOpenView,
 }) => {
+    const [sortType, setSortType] = useState("Ascending");
     return (
         <Stack gap={3}>
             <Header module={module} number={number} />
@@ -43,25 +49,25 @@ const Body = ({
                     flexDirection={"row"}
                     width={"100%"}
                 >
-                    <CusSearch />
+                    <CusSearch
+                        setCurSearch={setCurSearch}
+                        curSearch={curSearch}
+                    />
 
                     <Stack
                         gap={2}
                         flexDirection={"row"}
                         justifyContent={"space-between"}
                     >
-                        <CusSort />
+                        <CusSort
+                            setSortType={setSortType}
+                            sortType={sortType}
+                        />
 
-                        <CusIconBtn
-                            icon={
-                                <FilterAltOutlined
-                                    sx={{
-                                        height: 20,
-                                        width: 20,
-                                        color: "#1C3055",
-                                    }}
-                                />
-                            }
+                        <CusFilter
+                            filterBy={filterBy}
+                            setCurFilter={setCurFilter}
+                            curFilter={curFilter}
                         />
 
                         <CusPrimBtn
@@ -80,6 +86,9 @@ const Body = ({
                     setOpenEdit={setOpenEdit}
                     setCurRow={setCurRow}
                     curRow={curRow}
+                    sortType={sortType}
+                    viewFormLayout={viewFormLayout}
+                    setOpenView={setOpenView}
                 />
             </Box>
         </Stack>

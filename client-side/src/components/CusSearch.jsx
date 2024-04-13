@@ -3,7 +3,7 @@ import * as React from "react";
 import { Search } from "@mui/icons-material";
 import { InputAdornment, Input } from "@mui/material";
 
-const CusSearch = () => {
+const CusSearch = ({ setCurSearch, curSearch }) => {
     return (
         <Input
             placeholder="Search…"
@@ -17,8 +17,6 @@ const CusSearch = () => {
                 boxShadow: "0px 0px 2px rgba(76, 96, 133, 0.6)",
                 textAlign: "left",
                 fontSize: 12,
-                // border: 1,
-                // borderColor: "#E0EBF2",
             }}
             startAdornment={
                 <InputAdornment position="start">
@@ -29,6 +27,10 @@ const CusSearch = () => {
                     />
                 </InputAdornment>
             }
+            onChange={(e) => {
+                setCurSearch(e.target.value);
+            }}
+            value={curSearch}
         />
     );
 };

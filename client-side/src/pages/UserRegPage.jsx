@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import Body from "../layout/Body";
 import { UserForms } from "../forms";
 import axiosClient from "../axiosClient";
@@ -6,18 +6,33 @@ import { useData } from "../DataContext";
 
 import { useFormik } from "formik";
 import * as Yup from "yup";
+
 const UserRegPage = () => {
     const [openAdd, setOpenAdd] = useState(false);
     const [openEdit, setOpenEdit] = useState(false);
+    const [openView, setOpenView] = useState(false);
+    const [curSearch, setCurSearch] = useState("");
+    const [curFilter, setCurFilter] = useState("All");
+
+    const filterBy = [
+        "Super Admin",
+        "Admin",
+        "ISF Admin",
+        "Estate Admin",
+        "All",
+    ];
     const [curRow, setCurRow] = useState({
         fname: "",
-        mname: "",
+        mname: "N/A",
         lname: "",
         uname: "",
         role: "",
         email: "",
         department: "",
+        password: "",
+        updated_at: "",
     });
+
     const { users } = useData();
 
     // add users
@@ -119,7 +134,8 @@ const UserRegPage = () => {
         fname,
         mname,
         lname,
-        email
+        email,
+        updated_at
     ) {
         return {
             id,
@@ -131,25 +147,56 @@ const UserRegPage = () => {
             mname,
             lname,
             email,
+            updated_at,
         };
     }
 
-    let rows = users.map((data) => {
-        const { id, fname, mname, lname, role, department, uname, email } =
-            data;
-        let name = `${fname} ${mname ? `${mname.charAt(0)}.` : ""} ${lname}`;
-        return createData(
-            id,
-            name,
-            role,
-            department,
-            uname,
-            fname,
-            mname,
-            lname,
-            email
-        );
-    });
+    let rows = users
+        .filter((data) => {
+            const { fname, mname, lname } = data;
+            let name = `${fname} ${
+                mname ? `${mname.charAt(0)}.` : "N/A"
+            } ${lname}`.toLowerCase();
+
+            return curSearch.toLowerCase() === ""
+                ? data
+                : name.includes(curSearch.toLowerCase());
+        })
+        .filter((data) => {
+            return curFilter == "" || curFilter == "All"
+                ? data
+                : curFilter == data.role;
+        })
+        .map((dataMap) => {
+            const {
+                id,
+                fname,
+                mname,
+                lname,
+                role,
+                department,
+                uname,
+                email,
+                updated_at,
+            } = dataMap;
+            let name = `${fname} ${
+                mname ? `${mname.charAt(0)}.` : "N/A"
+            } ${lname}`;
+
+            let mnameVal = mname ? mname : "N/A";
+            return createData(
+                id,
+                name,
+                role,
+                department,
+                uname,
+                fname,
+                mnameVal,
+                lname,
+                email,
+                updated_at
+            );
+        });
 
     return (
         <>
@@ -181,9 +228,27 @@ const UserRegPage = () => {
                             action={() => setOpenEdit(false)}
                         />
                     }
+                    viewFormLayout={
+                        <UserForms
+                            label={"View user"}
+                            method={"VIEW"}
+                            form={editForm}
+                            open={openView}
+                            setOpen={setOpenView}
+                            action={() => setOpenView(false)}
+                            disabled={true}
+                            updated={curRow.updated_at}
+                        />
+                    }
                     setOpenEdit={setOpenEdit}
                     setCurRow={setCurRow}
                     curRow={curRow}
+                    setCurSearch={setCurSearch}
+                    curSearch={curSearch}
+                    setCurFilter={setCurFilter}
+                    filterBy={filterBy}
+                    curFilter={curFilter}
+                    setOpenView={setOpenView}
                 />
             )}
         </>

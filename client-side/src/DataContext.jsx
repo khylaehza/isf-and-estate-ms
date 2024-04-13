@@ -32,14 +32,14 @@ export const DataProvider = ({ children }) => {
 
     useEffect(() => {
         if (token) {
-            const interval = setInterval(() => {
-                axiosClient.get("/user").then((response) => {
-                    setUsers(response.data);
+            // const interval = setInterval(() => {
+            axiosClient.get("/user").then((response) => {
+                setUsers(response.data);
 
-                    setLoading(false);
-                });
-            }, 1000);
-            return () => clearInterval(interval);
+                setLoading(false);
+            });
+            // }, 1000);
+            // return () => clearInterval(interval);
         }
     }, [token]);
 

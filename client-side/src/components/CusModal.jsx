@@ -8,6 +8,7 @@ import {
 } from "@mui/material";
 import { CusPrimBtn, CusSecBtn } from "./CusButton";
 import { CloseRounded } from "@mui/icons-material";
+import moment from "moment";
 const CusModal = ({
     label,
     open,
@@ -16,6 +17,7 @@ const CusModal = ({
     form,
     action,
     method,
+    updated,
 }) => {
     const handleClose = () => {
         setOpen(false);
@@ -51,14 +53,17 @@ const CusModal = ({
                             justifyContent={"space-between"}
                             alignItems={"center"}
                         >
-                            <Typography
-                                id="title"
-                                fontSize={16}
-                                fontWeight={"medium"}
-                                gutterBottom
-                            >
-                                {label}
-                            </Typography>
+                            <Stack flexDirection={"column"}>
+                                <Typography
+                                    id="title"
+                                    fontSize={16}
+                                    fontWeight={"medium"}
+                                    gutterBottom
+                                >
+                                    {label}
+                                </Typography>
+                            </Stack>
+
                             <IconButton onClick={handleClose}>
                                 <CloseRounded
                                     sx={{ color: "#4C6085", fontSize: 16 }}
@@ -71,14 +76,27 @@ const CusModal = ({
                         <Stack
                             flexDirection={"row"}
                             gap={1}
-                            justifyContent={"flex-end"}
+                            justifyContent={"space-between"}
+                            alignItems={"center"}
                         >
-                            <CusSecBtn label="CANCEL" action={handleClose} />
-                            <CusPrimBtn
-                                label={method}
-                                type={"submit"}
-                                action={action}
-                            />
+                            <Typography fontSize={11} color={"#ABABAB"}>
+                                Last Updated: {moment(updated).format("LLLL")}
+                            </Typography>
+                            <Stack
+                                flexDirection={"row"}
+                                gap={1}
+                                justifyContent={"flex-end"}
+                            >
+                                <CusSecBtn
+                                    label="CANCEL"
+                                    action={handleClose}
+                                />
+                                <CusPrimBtn
+                                    label={method}
+                                    type={"submit"}
+                                    action={action}
+                                />
+                            </Stack>
                         </Stack>
                     </Stack>
                 </form>

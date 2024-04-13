@@ -103,6 +103,8 @@ export const CusFormInput = ({
     onChange,
     onBlur,
     touch,
+    disabled,
+    endAdornment,
 }) => {
     return (
         <Box
@@ -151,6 +153,12 @@ export const CusFormInput = ({
                     onChange={onChange}
                     value={value}
                     onBlur={onBlur}
+                    disabled={disabled}
+                    endAdornment={
+                        <InputAdornment position="end">
+                            {endAdornment}
+                        </InputAdornment>
+                    }
                 />
 
                 {error && touch ? (

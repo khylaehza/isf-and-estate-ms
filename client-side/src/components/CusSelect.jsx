@@ -10,6 +10,7 @@ const CusSelect = ({
     onChange,
     value,
     touch,
+    disabled,
 }) => {
     return (
         <Box
@@ -45,6 +46,7 @@ const CusSelect = ({
                         fontSize: 12,
                         height: 45,
                     }}
+                    disabled={disabled}
                 >
                     <MenuItem
                         value={""}
