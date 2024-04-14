@@ -44,6 +44,7 @@ const CusModal = ({
                 onClose={handleClose}
                 aria-labelledby="title"
                 aria-describedby="description"
+                style={{ overflow: "scroll", height: "100%" }}
             >
                 <form onSubmit={form.handleSubmit}>
                     <Stack sx={style} gap={2}>
@@ -74,7 +75,7 @@ const CusModal = ({
 
                         {addFormLayout}
                         <Stack
-                            flexDirection={"row"}
+                            flexDirection={{ xs: "column", lg: "row" }}
                             gap={1}
                             justifyContent={"space-between"}
                             alignItems={"center"}

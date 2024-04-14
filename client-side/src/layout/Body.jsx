@@ -46,8 +46,14 @@ const Body = ({
                 <Stack
                     display={"flex"}
                     justifyContent={"space-between"}
-                    flexDirection={"row"}
+                    flexDirection={{
+                        xs: "column",
+                        sm: "row",
+                        row: "column",
+                        lg: "row",
+                    }}
                     width={"100%"}
+                    gap={1}
                 >
                     <CusSearch
                         setCurSearch={setCurSearch}
@@ -59,16 +65,22 @@ const Body = ({
                         flexDirection={"row"}
                         justifyContent={"space-between"}
                     >
-                        <CusSort
-                            setSortType={setSortType}
-                            sortType={sortType}
-                        />
+                        <Stack
+                            justifyContent={{ xs: "flex-start" }}
+                            flexDirection={"row"}
+                            gap={2}
+                        >
+                            <CusSort
+                                setSortType={setSortType}
+                                sortType={sortType}
+                            />
 
-                        <CusFilter
-                            filterBy={filterBy}
-                            setCurFilter={setCurFilter}
-                            curFilter={curFilter}
-                        />
+                            <CusFilter
+                                filterBy={filterBy}
+                                setCurFilter={setCurFilter}
+                                curFilter={curFilter}
+                            />
+                        </Stack>
 
                         <CusPrimBtn
                             label={"+ Add User"}

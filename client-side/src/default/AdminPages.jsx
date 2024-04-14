@@ -2,8 +2,7 @@ import { Navigate, Outlet, useLocation } from "react-router-dom";
 import { useData } from "../DataContext";
 import { SideNav } from "../layout";
 import { HomePage } from "../pages";
-import { useEffect } from "react";
-import axiosClient from "../axiosClient";
+
 const AdminPages = () => {
     const { curUser, token, setToken, setCurUser } = useData();
     const location = useLocation();

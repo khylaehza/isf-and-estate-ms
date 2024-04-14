@@ -29,9 +29,13 @@ import {
     HomeWorkRounded,
     ExpandLessRounded,
     ExpandMoreRounded,
+    DashboardOutlined,
+    AddBoxOutlined,
+    GroupsOutlined,
+    HomeWorkOutlined,
 } from "@mui/icons-material";
 import CusMenu from "../components/CusMenu";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 const drawerWidth = 240;
 
 const openedMixin = (theme) => ({
@@ -124,6 +128,7 @@ const AppBarStyle = styled(AppBar, {
 const SideNav = ({ curUser, setCurUser, setToken, children }) => {
     const navigate = useNavigate();
     const [open, setOpen] = useState(true);
+    const location = useLocation();
     const theme = useTheme();
 
     const [regMenu, openRegOpen] = useState(false);
@@ -143,20 +148,34 @@ const SideNav = ({ curUser, setCurUser, setToken, children }) => {
     const menuData = [
         {
             name: "Dashboard",
-            icon: <DashboardRounded />,
+            icon:
+                location.pathname == "/" ? (
+                    <DashboardRounded sx={{ color: "#4C6085" }} />
+                ) : (
+                    <DashboardOutlined sx={{ color: "#4C6085" }} />
+                ),
             action: () => {
-                console.log("dashboard");
+                navigate("/");
             },
+            location: "/",
         },
         {
             name: "Registration",
-            icon: <AddBoxRounded />,
+            icon:
+                location.pathname == "/user" ||
+                location.pathname == "/district" ||
+                location.pathname == "/estate" ? (
+                    <AddBoxRounded sx={{ color: "#4C6085" }} />
+                ) : (
+                    <AddBoxOutlined sx={{ color: "#4C6085" }} />
+                ),
             menus: [
                 {
                     name: "User",
                     action: () => {
-                        navigate("user");
+                        navigate("/user");
                     },
+                    location: "/user",
                 },
                 {
                     name: "District",
@@ -174,13 +193,17 @@ const SideNav = ({ curUser, setCurUser, setToken, children }) => {
             action: () => {
                 setOpen(true);
                 openRegOpen(!regMenu);
-                console.log("registration");
             },
             open: regMenu,
         },
         {
             name: "ISFs",
-            icon: <GroupsRounded />,
+            icon:
+                location.pathname == "/district1" ? (
+                    <GroupsRounded sx={{ color: "#4C6085" }} />
+                ) : (
+                    <GroupsOutlined sx={{ color: "#4C6085" }} />
+                ),
             menus: [
                 {
                     name: "District 1",
@@ -210,7 +233,13 @@ const SideNav = ({ curUser, setCurUser, setToken, children }) => {
         },
         {
             name: "Estate",
-            icon: <HomeWorkRounded />,
+            icon:
+                location.pathname == "/district1" ? (
+                    <HomeWorkRounded sx={{ color: "#4C6085" }} />
+                ) : (
+                    <HomeWorkOutlined sx={{ color: "#4C6085" }} />
+                ),
+
             menus: [
                 {
                     name: "Tondominium",
@@ -360,7 +389,9 @@ const SideNav = ({ curUser, setCurUser, setToken, children }) => {
                             <ListItem
                                 key={index}
                                 disablePadding
-                                sx={{ display: "block" }}
+                                sx={{
+                                    display: "block",
+                                }}
                             >
                                 <ListItemButton
                                     sx={{
@@ -440,6 +471,13 @@ const SideNav = ({ curUser, setCurUser, setToken, children }) => {
                                                     <ListItemButton
                                                         key={key}
                                                         onClick={menu.action}
+                                                        sx={{
+                                                            backgroundColor:
+                                                                location.pathname ==
+                                                                menu.location
+                                                                    ? "#EFF1F4"
+                                                                    : "#FFF",
+                                                        }}
                                                     >
                                                         <ListItemIcon />
                                                         <ListItemText>
@@ -448,6 +486,11 @@ const SideNav = ({ curUser, setCurUser, setToken, children }) => {
                                                                 style={{
                                                                     fontSize: 12,
                                                                     color: "#1C3055",
+                                                                    fontWeight:
+                                                                        location.pathname ==
+                                                                        menu.location
+                                                                            ? "bold"
+                                                                            : "normal",
                                                                 }}
                                                             >
                                                                 {menu.name}

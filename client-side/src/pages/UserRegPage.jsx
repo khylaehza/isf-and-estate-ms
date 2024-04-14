@@ -180,10 +180,10 @@ const UserRegPage = () => {
                 updated_at,
             } = dataMap;
             let name = `${fname} ${
-                mname ? `${mname.charAt(0)}.` : "N/A"
+                mname ? `${mname.charAt(0)}.` : " "
             } ${lname}`;
 
-            let mnameVal = mname ? mname : "N/A";
+            let mnameVal = mname ? mname : " ";
             return createData(
                 id,
                 name,
