@@ -1,7 +1,5 @@
-import { Grid, IconButton } from "@mui/material";
+import { Grid } from "@mui/material";
 import { CusFormInput, CusSelect, CusModal } from "../components";
-import { useState } from "react";
-import { VisibilityOffRounded, VisibilityRounded } from "@mui/icons-material";
 const UserForms = ({
     label,
     form,
@@ -10,18 +8,9 @@ const UserForms = ({
     action,
     method,
     disabled,
-    updated,
 }) => {
     const roleList = ["Super Admin", "Admin", "ISF Admin", "Estate Admin"];
     const depList = ["DILG Manila", "Dep1", "Dep2"];
-
-    const [showPass, setShowPass] = useState(false);
-    const handleShowPass = () => setShowPass((show) => !show);
-    const [showConPass, setShowConPass] = useState(false);
-    const handleShowConPass = () => setShowConPass((show) => !show);
-    const handleMouseDown = (event) => {
-        event.preventDefault();
-    };
     return (
         <CusModal
             label={label}
@@ -30,7 +19,6 @@ const UserForms = ({
             form={form}
             action={action}
             method={method}
-            updated={updated}
             addFormLayout={
                 <Grid
                     container
@@ -121,12 +109,7 @@ const UserForms = ({
                         />
                     </Grid>
 
-                    <Grid
-                        item
-                        xs={method == "VIEW" ? 12 : 2}
-                        sm={method == "VIEW" ? 12 : 4}
-                        md={method == "VIEW" ? 12 : 4}
-                    >
+                    <Grid item xs={2} sm={4} md={4}>
                         <CusFormInput
                             name="email"
                             label="Email"
@@ -141,56 +124,26 @@ const UserForms = ({
                         />
                     </Grid>
 
-                    {method != "VIEW" && (
+                    {method == "ADD" && (
                         <>
                             <Grid item xs={2} sm={4} md={4}>
                                 <CusFormInput
                                     name="password"
-                                    label={
-                                        method == "EDIT"
-                                            ? "New Password"
-                                            : "Password"
-                                    }
+                                    label="Password"
                                     required={true}
                                     placeholder={"•••••••"}
                                     type={"password"}
-                                    value={form.values.pass}
+                                    value={form.values.password}
                                     onChange={form.handleChange}
                                     onBlur={form.handleBlur}
-                                    error={form.errors.pass}
-                                    touch={form.touched.pass}
-                                    endAdornment={
-                                        <IconButton
-                                            onClick={handleShowPass}
-                                            onMouseDown={handleMouseDown}
-                                        >
-                                            {showPass ? (
-                                                <VisibilityOffRounded
-                                                    sx={{
-                                                        color: "#4C6085",
-                                                        fontSize: 16,
-                                                    }}
-                                                />
-                                            ) : (
-                                                <VisibilityRounded
-                                                    sx={{
-                                                        color: "#4C6085",
-                                                        fontSize: 16,
-                                                    }}
-                                                />
-                                            )}
-                                        </IconButton>
-                                    }
+                                    error={form.errors.password}
+                                    touch={form.touched.password}
                                 />
                             </Grid>
                             <Grid item xs={2} sm={4} md={4}>
                                 <CusFormInput
                                     name="conpass"
-                                    label={
-                                        method == "EDIT"
-                                            ? "Confirm New Password"
-                                            : "Confirm Password"
-                                    }
+                                    label="Confirm Password"
                                     required={true}
                                     placeholder={"•••••••"}
                                     type={"password"}
@@ -199,28 +152,6 @@ const UserForms = ({
                                     onBlur={form.handleBlur}
                                     error={form.errors.conpass}
                                     touch={form.touched.conpass}
-                                    endAdornment={
-                                        <IconButton
-                                            onClick={handleShowConPass}
-                                            onMouseDown={handleMouseDown}
-                                        >
-                                            {showConPass ? (
-                                                <VisibilityOffRounded
-                                                    sx={{
-                                                        color: "#4C6085",
-                                                        fontSize: 16,
-                                                    }}
-                                                />
-                                            ) : (
-                                                <VisibilityRounded
-                                                    sx={{
-                                                        color: "#4C6085",
-                                                        fontSize: 16,
-                                                    }}
-                                                />
-                                            )}
-                                        </IconButton>
-                                    }
                                 />
                             </Grid>
                         </>

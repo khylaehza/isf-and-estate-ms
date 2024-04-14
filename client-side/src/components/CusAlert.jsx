@@ -13,18 +13,12 @@ import {
 import { forwardRef } from "react";
 import { CusSecBtn, CusPrimBtn } from "./CusButton";
 import { CloseRounded } from "@mui/icons-material";
-import axiosClient from "../axiosClient";
+
 const Transition = forwardRef(function Transition(props, ref) {
     return <Slide direction="up" ref={ref} {...props} />;
 });
 
-export default function CusAlert({ open, setOpen, id }) {
-    const handleDelete = () => {
-        axiosClient.delete(`/user/${id}`).then(() => {
-            setOpen(false);
-        });
-    };
-
+export default function CusAlert({ open, setOpen, name, handleDelete }) {
     const handleClose = () => {
         setOpen(false);
     };
@@ -44,7 +38,7 @@ export default function CusAlert({ open, setOpen, id }) {
                     justifyContent={"space-between"}
                     alignItems={"center"}
                 >
-                    <DialogTitle fontSize={16}>Delete User {id}</DialogTitle>
+                    <DialogTitle fontSize={16}>Delete {name}</DialogTitle>
                     <IconButton onClick={handleClose}>
                         <CloseRounded sx={{ color: "#4C6085", fontSize: 16 }} />
                     </IconButton>

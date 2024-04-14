@@ -6,6 +6,7 @@ import {
     CusTable,
     CusSort,
     CusFilter,
+    CusToast,
 } from "../components";
 import { useState } from "react";
 const Body = ({
@@ -15,7 +16,6 @@ const Body = ({
     columns,
     setOpen,
     addFormLayout,
-    editForm,
     editFormLayout,
     setOpenEdit,
     setCurRow,
@@ -27,6 +27,13 @@ const Body = ({
     curFilter,
     viewFormLayout,
     setOpenView,
+    setOpenDel,
+    openDel,
+    handleDelete,
+    variant,
+    message,
+    openToast,
+    setOpenToast,
 }) => {
     const [sortType, setSortType] = useState("Ascending");
     return (
@@ -83,17 +90,19 @@ const Body = ({
                         </Stack>
 
                         <CusPrimBtn
-                            label={"+ Add User"}
+                            label={`+ Add ${module}`}
                             action={() => setOpen(true)}
                         />
 
                         {addFormLayout}
+                        {editFormLayout}
+                        {viewFormLayout}
                     </Stack>
                 </Stack>
+
                 <CusTable
                     rows={rows}
                     columns={columns}
-                    editForm={editForm}
                     editFormLayout={editFormLayout}
                     setOpenEdit={setOpenEdit}
                     setCurRow={setCurRow}
@@ -101,8 +110,17 @@ const Body = ({
                     sortType={sortType}
                     viewFormLayout={viewFormLayout}
                     setOpenView={setOpenView}
+                    setOpenDel={setOpenDel}
+                    openDel={openDel}
+                    handleDelete={handleDelete}
                 />
             </Box>
+            <CusToast
+                variant={variant}
+                message={message}
+                openToast={openToast}
+                setOpenToast={setOpenToast}
+            />
         </Stack>
     );
 };

@@ -22,15 +22,15 @@ import CusAlert from "./CusAlert";
 const CusTable = ({
     rows,
     columns,
-    editFormLayout,
+    curRow,
     setOpenEdit,
     setCurRow,
     sortType,
-    viewFormLayout,
     setOpenView,
+    setOpenDel,
+    openDel,
+    handleDelete,
 }) => {
-    const [delOpen, setDelOpen] = useState(false);
-    const [curDelRow, setCurDelRow] = useState();
     const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(4);
 
@@ -44,10 +44,10 @@ const CusTable = ({
     };
 
     rows.sort((a, b) => {
-        if (sortType == "asc") {
-            return a.name.localeCompare(b.name);
-        } else {
-            return b.name.localeCompare(a.name);
+        if (sortType == "Ascending") {
+            return a.name.toString().localeCompare(b.name);
+        } else if (sortType == "Descending") {
+            return b.name.toString().localeCompare(a.name);
         }
     });
 
@@ -67,7 +67,7 @@ const CusTable = ({
                             {columns.map((column) => (
                                 <TableCell
                                     key={column.id}
-                                    align={column.align}
+                                    align={"left"}
                                     style={{
                                         minWidth: column.minWidth,
                                         backgroundColor: "#EFF1F4",
@@ -167,10 +167,8 @@ const CusTable = ({
                                                         w={24}
                                                         h={24}
                                                         action={() => {
-                                                            setDelOpen(true);
-                                                            setCurDelRow(
-                                                                row.id
-                                                            );
+                                                            setOpenDel(true);
+                                                            setCurRow(row);
                                                         }}
                                                         icon={
                                                             <DeleteRounded
@@ -213,9 +211,12 @@ const CusTable = ({
                 onPageChange={handleChangePage}
                 onRowsPerPageChange={handleChangeRowsPerPage}
             />
-            <CusAlert setOpen={setDelOpen} open={delOpen} id={curDelRow} />
-            {editFormLayout}
-            {viewFormLayout}
+            <CusAlert
+                setOpen={setOpenDel}
+                open={openDel}
+                name={curRow.name}
+                handleDelete={handleDelete}
+            />
         </Paper>
     );
 };

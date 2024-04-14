@@ -1,5 +1,5 @@
 import { useState } from "react";
-import Body from "../layout/Body";
+import { Body } from "../layout";
 import { UserForms } from "../forms";
 import axiosClient from "../axiosClient";
 import { useData } from "../DataContext";
@@ -11,16 +11,12 @@ const UserRegPage = () => {
     const [openAdd, setOpenAdd] = useState(false);
     const [openEdit, setOpenEdit] = useState(false);
     const [openView, setOpenView] = useState(false);
+    const [openDel, setOpenDel] = useState(false);
+    const [openToast, setOpenToast] = useState(false);
     const [curSearch, setCurSearch] = useState("");
     const [curFilter, setCurFilter] = useState("All");
-
-    const filterBy = [
-        "Super Admin",
-        "Admin",
-        "ISF Admin",
-        "Estate Admin",
-        "All",
-    ];
+    const [variant, setVariant] = useState("");
+    const [message, setMessage] = useState("");
     const [curRow, setCurRow] = useState({
         fname: "",
         mname: "N/A",
@@ -33,7 +29,15 @@ const UserRegPage = () => {
         updated_at: "",
     });
 
-    const { users } = useData();
+    const { users, setUsers } = useData();
+
+    const filterBy = [
+        "Super Admin",
+        "Admin",
+        "ISF Admin",
+        "Estate Admin",
+        "All",
+    ];
 
     // add users
     const form = useFormik({
@@ -63,20 +67,29 @@ const UserRegPage = () => {
                 axiosClient
                     .post("/user", value)
                     .then((data) => {
-                        if (data.data.status) {
-                            console.log(data.data);
+                        if (data.status == 200 || data.status == 201) {
+                            setUsers([...users, data.data]);
+
+                            setVariant("success");
+                            setMessage("User successfully added.");
+                            setOpenToast(true);
                         } else {
                             console.log(data.data.message);
                         }
                     })
                     .catch((error) => {
-                        console.log(error);
+                        setVariant("error");
+                        setMessage(error.response.data.message);
+                        setOpenToast(true);
                     });
-            } else {
-                console.log("pass not match");
-            }
 
-            actions.resetForm();
+                setOpenAdd(false);
+                actions.resetForm();
+            } else {
+                setVariant("error");
+                setMessage("Password does not match.");
+                setOpenToast(true);
+            }
         },
     });
 
@@ -88,15 +101,25 @@ const UserRegPage = () => {
             axiosClient
                 .put(`/user/${value.id}`, value)
                 .then((data) => {
-                    if (data.status) {
-                        console.log(data.data);
+                    if (data.status == 200 || data.status == 201) {
+                        setUsers(
+                            users.map((user) =>
+                                user.id === data.data.id ? data.data : user
+                            )
+                        );
+                        setVariant("success");
+                        setMessage("User successfully edited.");
+                        setOpenToast(true);
                     } else {
                         console.log(data.data.message);
                     }
                 })
                 .catch((error) => {
-                    console.log(error);
+                    setVariant("error");
+                    setMessage(error.response.data.message);
+                    setOpenToast(true);
                 });
+            setOpenEdit(false);
             actions.resetForm();
         },
     });
@@ -109,19 +132,16 @@ const UserRegPage = () => {
             id: "role",
             label: "Role",
             minWidth: 150,
-            align: "left",
         },
         {
             id: "department",
             label: "Department",
             minWidth: 150,
-            align: "left",
         },
         {
             id: "uname",
             label: "Username",
             minWidth: 150,
-            align: "left",
         },
     ];
 
@@ -151,107 +171,132 @@ const UserRegPage = () => {
         };
     }
 
-    let rows = users
-        .filter((data) => {
-            const { fname, mname, lname } = data;
-            let name = `${fname} ${
-                mname ? `${mname.charAt(0)}.` : "N/A"
-            } ${lname}`.toLowerCase();
+    let rows =
+        users.length > 0
+            ? users
+                  .filter((data) => {
+                      const { fname, mname, lname } = data;
+                      let name = `${fname} ${
+                          mname ? `${mname.charAt(0)}.` : "N/A"
+                      } ${lname}`.toLowerCase();
 
-            return curSearch.toLowerCase() === ""
-                ? data
-                : name.includes(curSearch.toLowerCase());
-        })
-        .filter((data) => {
-            return curFilter == "" || curFilter == "All"
-                ? data
-                : curFilter == data.role;
-        })
-        .map((dataMap) => {
-            const {
-                id,
-                fname,
-                mname,
-                lname,
-                role,
-                department,
-                uname,
-                email,
-                updated_at,
-            } = dataMap;
-            let name = `${fname} ${
-                mname ? `${mname.charAt(0)}.` : " "
-            } ${lname}`;
+                      return curSearch.toLowerCase() === ""
+                          ? data
+                          : name.includes(curSearch.toLowerCase());
+                  })
+                  .filter((data) => {
+                      return curFilter == "" || curFilter == "All"
+                          ? data
+                          : curFilter == data.role;
+                  })
+                  .map((dataMap) => {
+                      const {
+                          id,
+                          fname,
+                          mname,
+                          lname,
+                          role,
+                          department,
+                          uname,
+                          email,
+                          updated_at,
+                      } = dataMap;
+                      let name = `${fname} ${
+                          mname ? `${mname.charAt(0)}.` : " "
+                      } ${lname}`;
 
-            let mnameVal = mname ? mname : " ";
-            return createData(
-                id,
-                name,
-                role,
-                department,
-                uname,
-                fname,
-                mnameVal,
-                lname,
-                email,
-                updated_at
-            );
-        });
+                      let mnameVal = mname ? mname : " ";
+                      return createData(
+                          id,
+                          name,
+                          role,
+                          department,
+                          uname,
+                          fname,
+                          mnameVal,
+                          lname,
+                          email,
+                          updated_at
+                      );
+                  })
+            : [];
 
+    // delete user
+    const handleDelete = () => {
+        axiosClient
+            .delete(`/user/${curRow.id}`)
+            .then(() => {
+                setUsers(users.filter((user) => user.id !== curRow.id));
+                setOpenDel(false);
+                setVariant("success");
+                setMessage("User successfully deleted.");
+                setOpenToast(true);
+            })
+            .catch((error) => {
+                setVariant("error");
+                setMessage(error.response.data.message);
+                setOpenToast(true);
+            });
+    };
     return (
-        <>
-            {rows && (
-                <Body
-                    module={"User"}
-                    number={rows.length < 10 ? `0${rows.length}` : rows.length}
-                    rows={rows}
-                    columns={columns}
+        <Body
+            module={"User"}
+            number={rows.length < 10 ? `0${rows.length}` : rows.length}
+            rows={rows.length == 0 ? [] : rows}
+            columns={columns}
+            setOpen={setOpenAdd}
+            addFormLayout={
+                <UserForms
+                    label={"Add new user"}
+                    method={"ADD"}
+                    form={form}
+                    open={openAdd}
                     setOpen={setOpenAdd}
-                    addFormLayout={
-                        <UserForms
-                            label={"Add new user"}
-                            method={"ADD"}
-                            form={form}
-                            open={openAdd}
-                            setOpen={setOpenAdd}
-                            action={() => setOpenAdd(false)}
-                        />
-                    }
-                    editForm={editForm}
-                    editFormLayout={
-                        <UserForms
-                            label={"Edit user"}
-                            method={"EDIT"}
-                            form={editForm}
-                            open={openEdit}
-                            setOpen={setOpenEdit}
-                            action={() => setOpenEdit(false)}
-                        />
-                    }
-                    viewFormLayout={
-                        <UserForms
-                            label={"View user"}
-                            method={"VIEW"}
-                            form={editForm}
-                            open={openView}
-                            setOpen={setOpenView}
-                            action={() => setOpenView(false)}
-                            disabled={true}
-                            updated={curRow.updated_at}
-                        />
-                    }
-                    setOpenEdit={setOpenEdit}
-                    setCurRow={setCurRow}
-                    curRow={curRow}
-                    setCurSearch={setCurSearch}
-                    curSearch={curSearch}
-                    setCurFilter={setCurFilter}
-                    filterBy={filterBy}
-                    curFilter={curFilter}
-                    setOpenView={setOpenView}
+                    action={() => {
+                        setOpenAdd(false);
+                        form.resetForm();
+                    }}
                 />
-            )}
-        </>
+            }
+            editFormLayout={
+                <UserForms
+                    label={"Edit user"}
+                    method={"EDIT"}
+                    form={editForm}
+                    open={openEdit}
+                    setOpen={setOpenEdit}
+                    action={() => setOpenEdit(false)}
+                />
+            }
+            viewFormLayout={
+                <UserForms
+                    label={"View user"}
+                    method={"VIEW"}
+                    form={editForm}
+                    open={openView}
+                    setOpen={setOpenView}
+                    action={() => setOpenView(false)}
+                    disabled={true}
+                    updated={curRow.updated_at}
+                />
+            }
+            setOpenEdit={setOpenEdit}
+            setCurRow={setCurRow}
+            curRow={curRow}
+            setCurSearch={setCurSearch}
+            curSearch={curSearch}
+            setCurFilter={setCurFilter}
+            filterBy={filterBy}
+            curFilter={curFilter}
+            setOpenView={setOpenView}
+            setOpenDel={setOpenDel}
+            openDel={openDel}
+            handleDelete={handleDelete}
+            variant={variant}
+            message={message}
+            setOpenToast={setOpenToast}
+            openToast={openToast}
+        />
     );
 };
 

@@ -180,8 +180,9 @@ const SideNav = ({ curUser, setCurUser, setToken, children }) => {
                 {
                     name: "District",
                     action: () => {
-                        console.log("District");
+                        navigate("/district");
                     },
+                    location: "/district",
                 },
                 {
                     name: "Estate",

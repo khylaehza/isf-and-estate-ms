@@ -3,8 +3,10 @@ import { createTheme, ThemeProvider } from "@mui/material";
 import router from "./router";
 import { RouterProvider } from "react-router-dom";
 import { DataProvider } from "./DataContext";
+
 function App() {
     const theme = createTheme({
+        palette: { mode: "light" },
         typography: {
             fontFamily: ["Space Grotesk", "sans-serif"].join(","),
             color: "#1C3055",

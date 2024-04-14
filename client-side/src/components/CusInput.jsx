@@ -45,7 +45,6 @@ export const CusLogInput = ({
                     name={name}
                     placeholder={placeholder}
                     variant="filled"
-                    // disableUnderline
                     fullWidth
                     width="100%"
                     sx={{
@@ -105,6 +104,7 @@ export const CusFormInput = ({
     touch,
     disabled,
     endAdornment,
+    inputProps,
 }) => {
     return (
         <Box
@@ -148,6 +148,7 @@ export const CusFormInput = ({
                         textAlign: "left",
                         fontSize: 12,
                         border: 1,
+
                         borderColor: "rgba(28, 48, 85, 0.3)",
                     }}
                     onChange={onChange}
@@ -159,10 +160,13 @@ export const CusFormInput = ({
                             {endAdornment}
                         </InputAdornment>
                     }
+                    inputProps={inputProps}
                 />
 
                 {error && touch ? (
-                    <FormHelperText>{error}</FormHelperText>
+                    <FormHelperText sx={{ fontSize: 11 }}>
+                        {error}
+                    </FormHelperText>
                 ) : (
                     <></>
                 )}

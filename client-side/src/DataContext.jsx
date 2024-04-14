@@ -12,6 +12,7 @@ export const DataProvider = ({ children }) => {
     const [token, _setToken] = useState(localStorage.getItem("ACCESS_TOKEN"));
     const [loading, setLoading] = useState(true);
     const [users, setUsers] = useState([]);
+    const [districts, setDistricts] = useState([]);
     const setToken = (token) => {
         _setToken(token);
         if (token) {
@@ -32,14 +33,21 @@ export const DataProvider = ({ children }) => {
 
     useEffect(() => {
         if (token) {
-            // const interval = setInterval(() => {
             axiosClient.get("/user").then((response) => {
                 setUsers(response.data);
 
                 setLoading(false);
             });
-            // }, 1000);
-            // return () => clearInterval(interval);
+        }
+    }, [token]);
+
+    useEffect(() => {
+        if (token) {
+            axiosClient.get("/district").then((response) => {
+                setDistricts(response.data);
+
+                setLoading(false);
+            });
         }
     }, [token]);
 
@@ -47,7 +55,17 @@ export const DataProvider = ({ children }) => {
         <div>Loading...</div>
     ) : (
         <DataContext.Provider
-            value={{ curUser, token, setCurUser, setToken, users }}
+            value={{
+                curUser,
+                token,
+                setCurUser,
+                setToken,
+                setLoading,
+                users,
+                districts,
+                setUsers,
+                setDistricts,
+            }}
         >
             {children}
         </DataContext.Provider>

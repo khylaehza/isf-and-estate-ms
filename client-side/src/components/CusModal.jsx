@@ -41,7 +41,7 @@ const CusModal = ({
             <Modal
                 keepMounted
                 open={open}
-                onClose={handleClose}
+                onClose={action}
                 aria-labelledby="title"
                 aria-describedby="description"
                 style={{ overflow: "scroll", height: "100%" }}
@@ -65,7 +65,7 @@ const CusModal = ({
                                 </Typography>
                             </Stack>
 
-                            <IconButton onClick={handleClose}>
+                            <IconButton onClick={action}>
                                 <CloseRounded
                                     sx={{ color: "#4C6085", fontSize: 16 }}
                                 />
@@ -75,14 +75,32 @@ const CusModal = ({
 
                         {addFormLayout}
                         <Stack
-                            flexDirection={{ xs: "column", lg: "row" }}
+                            flexDirection={{
+                                xs: "column",
+                                sm: "row",
+                                lg: "row",
+                            }}
                             gap={1}
                             justifyContent={"space-between"}
                             alignItems={"center"}
                         >
-                            <Typography fontSize={11} color={"#ABABAB"}>
-                                Last Updated: {moment(updated).format("LLLL")}
-                            </Typography>
+                            <Stack
+                                justifyContent={"center"}
+                                alignItems={"center"}
+                            >
+                                <Typography fontSize={11} color={"#ABABAB"}>
+                                    {method == "VIEW" && (
+                                        <>
+                                            {updated != ""
+                                                ? `Last Updated: ${moment(
+                                                      updated
+                                                  ).format("LLLL")}`
+                                                : ""}
+                                        </>
+                                    )}
+                                </Typography>
+                            </Stack>
+
                             <Stack
                                 flexDirection={"row"}
                                 gap={1}
@@ -92,11 +110,7 @@ const CusModal = ({
                                     label="CANCEL"
                                     action={handleClose}
                                 />
-                                <CusPrimBtn
-                                    label={method}
-                                    type={"submit"}
-                                    action={action}
-                                />
+                                <CusPrimBtn label={method} type={"submit"} />
                             </Stack>
                         </Stack>
                     </Stack>

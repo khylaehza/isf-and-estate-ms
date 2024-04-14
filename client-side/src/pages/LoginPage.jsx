@@ -111,14 +111,14 @@ const LoginPage = () => {
                             gap={{ xs: 2, sm: 3 }}
                         >
                             <img
-                                src={pilipinaslogo}
-                                alt="Bagong Pilipinas Logo"
-                                height={80}
-                            />
-                            <img
                                 src={manilalogo}
                                 alt="Manila Logo"
                                 height={70}
+                            />
+                            <img
+                                src={pilipinaslogo}
+                                alt="Bagong Pilipinas Logo"
+                                height={80}
                             />
                         </Stack>
                         <Divider width="101%" />
