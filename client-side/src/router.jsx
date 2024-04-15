@@ -1,4 +1,9 @@
-import { LoginPage, UserRegPage, DistrictRegPage } from "./pages";
+import {
+    LoginPage,
+    UserRegPage,
+    DistrictRegPage,
+    EstateRegPage,
+} from "./pages";
 import { createBrowserRouter } from "react-router-dom";
 import { AdminPages } from "./default";
 const router = createBrowserRouter([
@@ -12,6 +17,7 @@ const router = createBrowserRouter([
         children: [
             { path: "/user", element: <UserRegPage /> },
             { path: "/district", element: <DistrictRegPage /> },
+            { path: "/estate", element: <EstateRegPage /> },
         ],
     },
 ]);

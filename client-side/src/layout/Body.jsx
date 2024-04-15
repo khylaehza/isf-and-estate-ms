@@ -15,8 +15,8 @@ const Body = ({
     rows,
     columns,
     setOpen,
-    addFormLayout,
-    editFormLayout,
+    // addFormLayout,
+    // editFormLayout,
     setOpenEdit,
     setCurRow,
     curRow,
@@ -25,7 +25,7 @@ const Body = ({
     setCurFilter,
     filterBy,
     curFilter,
-    viewFormLayout,
+    // viewFormLayout,
     setOpenView,
     setOpenDel,
     openDel,
@@ -94,21 +94,19 @@ const Body = ({
                             action={() => setOpen(true)}
                         />
 
-                        {addFormLayout}
+                        {/* {addFormLayout}
                         {editFormLayout}
-                        {viewFormLayout}
+                        {viewFormLayout} */}
                     </Stack>
                 </Stack>
 
                 <CusTable
                     rows={rows}
                     columns={columns}
-                    editFormLayout={editFormLayout}
                     setOpenEdit={setOpenEdit}
                     setCurRow={setCurRow}
                     curRow={curRow}
                     sortType={sortType}
-                    viewFormLayout={viewFormLayout}
                     setOpenView={setOpenView}
                     setOpenDel={setOpenDel}
                     openDel={openDel}

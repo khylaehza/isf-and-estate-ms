@@ -187,8 +187,9 @@ const SideNav = ({ curUser, setCurUser, setToken, children }) => {
                 {
                     name: "Estate",
                     action: () => {
-                        console.log("Estate");
+                        navigate("/estate");
                     },
+                    location: "/estate",
                 },
             ],
             action: () => {
@@ -228,7 +229,6 @@ const SideNav = ({ curUser, setCurUser, setToken, children }) => {
             action: () => {
                 setOpen(true);
                 openIsfOpen(!isfMenu);
-                console.log("isf");
             },
             open: isfMenu,
         },

@@ -233,7 +233,6 @@ const DistrictRegPage = () => {
                         action={() => setOpenAdd(false)}
                     />
                 }
-                editForm={editForm}
                 editFormLayout={
                     <DistrictForms
                         label={"Edit district"}
