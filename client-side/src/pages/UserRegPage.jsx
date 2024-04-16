@@ -120,7 +120,6 @@ const UserRegPage = () => {
                     setOpenToast(true);
                 });
             setOpenEdit(false);
-            actions.resetForm();
         },
     });
 

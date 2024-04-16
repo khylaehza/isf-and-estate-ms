@@ -107,10 +107,16 @@ const CusModal = ({
                                 justifyContent={"flex-end"}
                             >
                                 <CusSecBtn
-                                    label="CANCEL"
+                                    label={method == "VIEW" ? "Done" : "Cancel"}
                                     action={handleClose}
                                 />
-                                <CusPrimBtn label={method} type={"submit"} />
+
+                                {method !== "VIEW" && (
+                                    <CusPrimBtn
+                                        label={method}
+                                        type={"submit"}
+                                    />
+                                )}
                             </Stack>
                         </Stack>
                     </Stack>

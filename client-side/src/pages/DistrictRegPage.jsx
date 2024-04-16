@@ -95,7 +95,7 @@ const DistrictRegPage = () => {
                         );
 
                         setVariant("success");
-                        setMessage("District successfully added.");
+                        setMessage("District successfully edited.");
                         setOpenToast(true);
                     } else {
                         console.log(data.message);
@@ -107,7 +107,6 @@ const DistrictRegPage = () => {
                     setOpenToast(true);
                 });
             setOpenEdit(false);
-            actions.resetForm();
         },
     });
 
@@ -157,7 +156,7 @@ const DistrictRegPage = () => {
             ? districts
                   .filter((data) => {
                       const { name } = data;
-                      let disName = `District ${name}`;
+                      let disName = `District ${name}`.toLowerCase();
                       return curSearch.toLowerCase() === ""
                           ? data
                           : disName.includes(curSearch.toLowerCase());
@@ -205,7 +204,7 @@ const DistrictRegPage = () => {
                 );
                 setOpenDel(false);
                 setVariant("success");
-                setMessage("District successfully added.");
+                setMessage("District successfully deleted.");
                 setOpenToast(true);
             })
             .catch((error) => {
@@ -230,7 +229,10 @@ const DistrictRegPage = () => {
                         open={openAdd}
                         setOpen={setOpenAdd}
                         form={form}
-                        action={() => setOpenAdd(false)}
+                        action={() => {
+                            setOpenAdd(false);
+                            form.resetForm();
+                        }}
                     />
                 }
                 editFormLayout={

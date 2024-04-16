@@ -15,97 +15,91 @@ const EstateRegPage = () => {
     const [curFilter, setCurFilter] = useState("All");
     const [variant, setVariant] = useState("");
     const [message, setMessage] = useState("");
-    // const { estates, setEstates } = useData();
+    const { estates, setEstates } = useData();
 
+    console.log(estates);
     const [curRow, setCurRow] = useState({
-        // name: "",
-        // startZone: "",
-        // endZone: "",
-        // startBrgy: "",
-        // endBrgy: "",
-        // updated_at: "",
+        name: "",
+        address: "",
+        brgy: "",
+        zone: "",
+        district: "",
+        housingQuan: "",
+        status: "",
+        updated_at: "",
     });
 
     const filterBy = ["All"];
 
     const form = useFormik({
-        // initialValues: {
-        //     name: "",
-        //     startZone: "",
-        //     endZone: "",
-        //     startBrgy: "",
-        //     endBrgy: "",
-        // },
-        // validationSchema: Yup.object({
-        //     name: Yup.number().required("District number is required."),
-        //     startZone: Yup.number().required("Start zone is required."),
-        //     endZone: Yup.number()
-        //         .required("End zone is required.")
-        //         .min(
-        //             Yup.ref("startZone"),
-        //             "End zone must be greater than start zone."
-        //         ),
-        //     startBrgy: Yup.number().required("Start brgy is required."),
-        //     endBrgy: Yup.number()
-        //         .required("End brgy is required.")
-        //         .min(
-        //             Yup.ref("startBrgy"),
-        //             "End brgy must be greater than start brgy."
-        //         ),
-        // }),
-        // onSubmit: (value, actions) => {
-        //     axiosClient
-        //         .post("/district", value)
-        //         .then((data) => {
-        //             if (data.status == 200 || data.status == 201) {
-        //                 setDistricts([...districts, data.data]);
-        //                 setVariant("success");
-        //                 setMessage("District successfully added.");
-        //                 setOpenToast(true);
-        //             } else {
-        //                 console.log(data.data.message);
-        //             }
-        //         })
-        //         .catch((error) => {
-        //             setVariant("error");
-        //             setMessage(error.response.data.message);
-        //             setOpenToast(true);
-        //         });
-        //     setOpenAdd(false);
-        //     actions.resetForm();
-        // },
+        initialValues: {
+            name: "",
+            address: "",
+            brgy: "",
+            zone: "",
+            district: "",
+            housingQuan: "",
+            status: "",
+        },
+        validationSchema: Yup.object({
+            name: Yup.string().required("Estate is required."),
+            housingQuan: Yup.number().required("Housing quantity is required."),
+            status: Yup.string().required("Status is required."),
+            address: Yup.string().required("Address is required."),
+            brgy: Yup.number().required("Brgy is required."),
+            zone: Yup.number().required("Zone is required."),
+            district: Yup.number().required("District is required."),
+        }),
+        onSubmit: (value, actions) => {
+            axiosClient
+                .post("/estate", value)
+                .then((data) => {
+                    if (data.status == 200 || data.status == 201) {
+                        setEstates([...estates, data.data]);
+                        setVariant("success");
+                        setMessage("Estate successfully added.");
+                        setOpenToast(true);
+                    } else {
+                        console.log(data.data.message);
+                    }
+                })
+                .catch((error) => {
+                    setVariant("error");
+                    setMessage(error.response.data.message);
+                    setOpenToast(true);
+                });
+            setOpenAdd(false);
+            actions.resetForm();
+        },
     });
 
     const editForm = useFormik({
-        //  initialValues: curRow,
-        //  enableReinitialize: true,
-        //  onSubmit: (value, actions) => {
-        //      axiosClient
-        //          .put(`/district/${value.id}`, value)
-        //          .then((data) => {
-        //              if (data.status == 200 || data.status == 201) {
-        //                  setDistricts(
-        //                      districts.map((district) =>
-        //                          district.id === data.data.id
-        //                              ? data.data
-        //                              : district
-        //                      )
-        //                  );
-        //                  setVariant("success");
-        //                  setMessage("District successfully added.");
-        //                  setOpenToast(true);
-        //              } else {
-        //                  console.log(data.message);
-        //              }
-        //          })
-        //          .catch((error) => {
-        //              setVariant("error");
-        //              setMessage(error.response.data.message);
-        //              setOpenToast(true);
-        //          });
-        //      setOpenEdit(false);
-        //      actions.resetForm();
-        //  },
+        initialValues: curRow,
+        enableReinitialize: true,
+        onSubmit: (value, actions) => {
+            axiosClient
+                .put(`/estate/${value.id}`, value)
+                .then((data) => {
+                    if (data.status == 200 || data.status == 201) {
+                        setEstates(
+                            estates.map((estate) =>
+                                estate.id === data.data.id ? data.data : estate
+                            )
+                        );
+                        setVariant("success");
+                        setMessage("Estate successfully edited.");
+                        setOpenToast(true);
+                    } else {
+                        console.log(data.message);
+                    }
+                })
+                .catch((error) => {
+                    setVariant("error");
+                    setMessage(error.response.data.message);
+                    setOpenToast(true);
+                });
+            setOpenEdit(false);
+        },
     });
 
     const columns = [
@@ -118,78 +112,104 @@ const EstateRegPage = () => {
         },
 
         {
-            id: "zone",
-            label: "Zone",
-            minWidth: 100,
-        },
-        {
             id: "brgy",
             label: "Brgy",
-            minWidth: 100,
+            minWidth: 140,
         },
-        { id: "district", label: "District", minWidth: 100 },
         {
             id: "housingQuan",
             label: "No. of Housing",
             minWidth: 170,
         },
-        {
-            id: "size",
-            label: "Size",
-            minWidth: 170,
-        },
+
         {
             id: "status",
             label: "Status",
-            minWidth: 170,
+            minWidth: 150,
         },
     ];
 
     function createData(
         id,
-        disName,
-        zone,
+        name,
+        address,
         brgy,
-        updated_at,
-        startZone,
-        endZone,
-        startBrgy,
-        endBrgy,
-        name
+        zone,
+        district,
+        housingQuan,
+        status
     ) {
         return {
             id,
-            disName,
             name,
-            zone,
+            address,
             brgy,
-            updated_at,
-            startZone,
-            endZone,
-            startBrgy,
-            endBrgy,
+            zone,
+            district,
+            housingQuan,
+            status,
         };
     }
 
-    let rows = [];
+    let rows =
+        estates.length > 0
+            ? estates
+                  .filter((data) => {
+                      const { name } = data;
+
+                      return curSearch.toLowerCase() === ""
+                          ? data
+                          : name
+                                .toLowerCase()
+                                .includes(curSearch.toLowerCase());
+                  })
+                  .filter((data) => {
+                      return curFilter == "" || curFilter == "All"
+                          ? data
+                          : curFilter == data.status;
+                  })
+                  .map((dataMap) => {
+                      const {
+                          id,
+                          name,
+                          address,
+                          brgy,
+                          zone,
+                          district,
+                          housingQuan,
+                          status,
+                          updated_at,
+                      } = dataMap;
+
+                      return createData(
+                          id,
+                          name,
+                          address,
+                          brgy,
+                          zone,
+                          district,
+                          housingQuan,
+                          status,
+                          updated_at
+                      );
+                  })
+            : [];
 
     const handleDelete = () => {
-        // axiosClient
-        //     .delete(`/district/${curRow.id}`)
-        //     .then(() => {
-        //         setDistricts(
-        //             districts.filter((district) => district.id !== curRow.id)
-        //         );
-        //         setOpenDel(false);
-        //         setVariant("success");
-        //         setMessage("District successfully added.");
-        //         setOpenToast(true);
-        //     })
-        //     .catch((error) => {
-        //         setVariant("error");
-        //         setMessage(error.response.data.message);
-        //         setOpenToast(true);
-        //     });
+        axiosClient
+            .delete(`/estate/${curRow.id}`)
+            .then(() => {
+                setEstates(estates.filter((estate) => estate.id !== curRow.id));
+                setOpenDel(false);
+                setVariant("success");
+                setMessage("Estate successfully deleted.");
+                setOpenToast(true);
+            })
+            .catch((error) => {
+                setVariant("error");
+                setMessage(error.response.data.message);
+                setOpenToast(true);
+            });
     };
 
     return (
@@ -207,7 +227,10 @@ const EstateRegPage = () => {
                         open={openAdd}
                         setOpen={setOpenAdd}
                         form={form}
-                        action={() => setOpenAdd(false)}
+                        action={() => {
+                            setOpenAdd(false);
+                            form.resetForm();
+                        }}
                     />
                 }
                 editFormLayout={

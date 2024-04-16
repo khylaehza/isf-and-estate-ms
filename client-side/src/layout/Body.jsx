@@ -15,8 +15,8 @@ const Body = ({
     rows,
     columns,
     setOpen,
-    // addFormLayout,
-    // editFormLayout,
+    addFormLayout,
+    editFormLayout,
     setOpenEdit,
     setCurRow,
     curRow,
@@ -25,7 +25,7 @@ const Body = ({
     setCurFilter,
     filterBy,
     curFilter,
-    // viewFormLayout,
+    viewFormLayout,
     setOpenView,
     setOpenDel,
     openDel,
@@ -88,15 +88,13 @@ const Body = ({
                                 curFilter={curFilter}
                             />
                         </Stack>
-
                         <CusPrimBtn
                             label={`+ Add ${module}`}
                             action={() => setOpen(true)}
                         />
-
-                        {/* {addFormLayout}
+                        {addFormLayout}
                         {editFormLayout}
-                        {viewFormLayout} */}
+                        {viewFormLayout}
                     </Stack>
                 </Stack>
 
