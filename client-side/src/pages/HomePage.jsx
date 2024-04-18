@@ -7,7 +7,7 @@ const HomePage = () => {
     if (token == null) {
         return <Navigate to={"/login"} />;
     }
-    return <div>home</div>;
+    return <div>to be added</div>;
 };
 
 export default HomePage;

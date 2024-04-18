@@ -1,6 +1,5 @@
 import { Grid } from "@mui/material";
 import { CusFormInput, CusSelect, CusModal } from "../components";
-import { useState } from "react";
 
 const DistrictForms = ({
     label,

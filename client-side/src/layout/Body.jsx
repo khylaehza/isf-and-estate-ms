@@ -10,6 +10,7 @@ import {
 } from "../components";
 import { useState } from "react";
 const Body = ({
+    moduleHeader,
     module,
     number,
     rows,
@@ -34,11 +35,16 @@ const Body = ({
     message,
     openToast,
     setOpenToast,
+    location,
 }) => {
     const [sortType, setSortType] = useState("Ascending");
     return (
         <Stack gap={3}>
-            <Header module={module} number={number} />
+            <Header
+                module={module == "ISF" ? moduleHeader : module}
+                number={number}
+                location={location}
+            />
             <Box
                 bgcolor={"#fff"}
                 sx={{

@@ -36,6 +36,8 @@ import {
 } from "@mui/icons-material";
 import CusMenu from "../components/CusMenu";
 import { useNavigate, useLocation } from "react-router-dom";
+import { useData } from "../DataContext";
+
 const drawerWidth = 240;
 
 const openedMixin = (theme) => ({
@@ -130,6 +132,41 @@ const SideNav = ({ curUser, setCurUser, setToken, children }) => {
     const [open, setOpen] = useState(true);
     const location = useLocation();
     const theme = useTheme();
+    const { districts, estates } = useData();
+    const [curLocISF, setCurrentLocISF] = useState();
+    const [curLocEstate, setCurrentLocEstate] = useState();
+    let districtMenu = [];
+    let estateMenu = [];
+
+    districts.map((dst) => {
+        districtMenu.push({
+            name: `District ${dst.name}`,
+            action: () => {
+                setCurrentLocISF(`/isf/district${dst.name}`);
+                navigate(`/isf/district${dst.name}`);
+            },
+            location: `/isf/district${dst.name}`,
+        });
+    });
+
+    estates.map((est) => {
+        estateMenu.push({
+            name: est.name,
+            action: () => {
+                navigate(`/estate/${est.name}`);
+                setCurrentLocEstate(`/estate/${est.name}`);
+            },
+            location: `/estate/${est.name}`,
+        });
+    });
+
+    districtMenu.sort((a, b) => {
+        return a.name.localeCompare(b.name);
+    });
+
+    estateMenu.sort((a, b) => {
+        return a.name.localeCompare(b.name);
+    });
 
     const [regMenu, openRegOpen] = useState(false);
     const [isfMenu, openIsfOpen] = useState(false);
@@ -201,31 +238,12 @@ const SideNav = ({ curUser, setCurUser, setToken, children }) => {
         {
             name: "ISFs",
             icon:
-                location.pathname == "/district1" ? (
+                location.pathname == curLocISF ? (
                     <GroupsRounded sx={{ color: "#4C6085" }} />
                 ) : (
                     <GroupsOutlined sx={{ color: "#4C6085" }} />
                 ),
-            menus: [
-                {
-                    name: "District 1",
-                    action: () => {
-                        console.log("1");
-                    },
-                },
-                {
-                    name: "District 2",
-                    action: () => {
-                        console.log("2");
-                    },
-                },
-                {
-                    name: "District 3",
-                    action: () => {
-                        console.log("3");
-                    },
-                },
-            ],
+            menus: districtMenu,
             action: () => {
                 setOpen(true);
                 openIsfOpen(!isfMenu);
@@ -233,28 +251,15 @@ const SideNav = ({ curUser, setCurUser, setToken, children }) => {
             open: isfMenu,
         },
         {
-            name: "Estate",
+            name: "Estate Awardees",
             icon:
-                location.pathname == "/district1" ? (
+                location.pathname == curLocEstate ? (
                     <HomeWorkRounded sx={{ color: "#4C6085" }} />
                 ) : (
                     <HomeWorkOutlined sx={{ color: "#4C6085" }} />
                 ),
 
-            menus: [
-                {
-                    name: "Tondominium",
-                    action: () => {
-                        console.log("Tondominium");
-                    },
-                },
-                {
-                    name: "Binondominium",
-                    action: () => {
-                        console.log("Binondominium");
-                    },
-                },
-            ],
+            menus: estateMenu,
 
             action: () => {
                 setOpen(true);

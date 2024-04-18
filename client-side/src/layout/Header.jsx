@@ -1,5 +1,5 @@
 import { Box, Typography, Stack } from "@mui/material";
-const Header = ({ module, number }) => {
+const Header = ({ module, number, location }) => {
     return (
         <Box
             display={"flex"}
@@ -20,6 +20,7 @@ const Header = ({ module, number }) => {
                         {module}
                     </Typography>
                     <Typography variant="h5" color="#fff">
+                        {location}
                         Registration
                     </Typography>
                 </Stack>

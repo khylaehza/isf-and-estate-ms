@@ -8,7 +8,7 @@ use App\Http\Controllers\Registration\UserController;
 use App\Http\Controllers\Registration\DistrictController;
 use App\Http\Controllers\Registration\EstateController;
 
-// Route::post('register', [AuthController::class, 'register']);
+Route::post('register', [AuthController::class, 'register']);
 Route::post('login', [AuthController::class, 'login']);
 
 Route::group(['middleware' => ['auth:sanctum']], function () {

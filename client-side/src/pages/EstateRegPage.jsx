@@ -17,7 +17,6 @@ const EstateRegPage = () => {
     const [message, setMessage] = useState("");
     const { estates, setEstates } = useData();
 
-    console.log(estates);
     const [curRow, setCurRow] = useState({
         name: "",
         address: "",

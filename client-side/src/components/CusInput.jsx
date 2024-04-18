@@ -105,6 +105,7 @@ export const CusFormInput = ({
     disabled,
     endAdornment,
     inputProps,
+    multiline,
 }) => {
     return (
         <Box
@@ -161,6 +162,8 @@ export const CusFormInput = ({
                         </InputAdornment>
                     }
                     inputProps={inputProps}
+                    multiline={multiline}
+                    rows={multiline ? 3 : 1}
                 />
 
                 {error && touch ? (
