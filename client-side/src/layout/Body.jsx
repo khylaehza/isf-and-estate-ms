@@ -7,8 +7,11 @@ import {
     CusSort,
     CusFilter,
     CusToast,
+    CusDownload,
 } from "../components";
 import { useState } from "react";
+import { jsPDF } from "jspdf";
+import "jspdf-autotable";
 const Body = ({
     moduleHeader,
     module,
@@ -39,6 +42,27 @@ const Body = ({
     filterLabel,
 }) => {
     const [sortType, setSortType] = useState("Ascending");
+    const [anchorEl, setAnchorEl] = useState(null);
+
+    const generatePdf = () => {
+        const doc = new jsPDF();
+        doc.autoTable({
+            head: [columns.map((column) => column.label)],
+            body: rows.map((row) => columns.map((column) => row[column.id])),
+            startY: 20,
+            styles: { overflow: "linebreak" },
+            didDrawPage: () => {
+                // Header
+                doc.text(`${module}s`, 10, 10);
+            },
+        });
+        doc.save(`${module}.pdf`);
+    };
+
+    const handleDlClick = (event) => {
+        setAnchorEl(event.currentTarget);
+        generatePdf();
+    };
     return (
         <Stack gap={3}>
             <Header
@@ -94,6 +118,10 @@ const Body = ({
                                 setCurFilter={setCurFilter}
                                 curFilter={curFilter}
                                 label={filterLabel}
+                            />
+                            <CusDownload
+                                handleClick={handleDlClick}
+                                anchorEl={anchorEl}
                             />
                         </Stack>
                         <CusPrimBtn
