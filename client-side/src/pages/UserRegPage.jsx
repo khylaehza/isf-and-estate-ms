@@ -99,7 +99,7 @@ const UserRegPage = () => {
         enableReinitialize: true,
         onSubmit: (value, actions) => {
             axiosClient
-                .put(`/user/${value.id}`, value)
+                .post(`/user/${value.id}`, { ...value, _method: "PUT" })
                 .then((data) => {
                     if (data.status == 200 || data.status == 201) {
                         setUsers(

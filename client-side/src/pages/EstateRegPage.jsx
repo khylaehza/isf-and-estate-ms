@@ -26,6 +26,7 @@ const EstateRegPage = () => {
         housingQuan: "",
         status: "",
         updated_at: "",
+        sqm: "",
     });
 
     const filterBy = ["All"];
@@ -39,6 +40,7 @@ const EstateRegPage = () => {
             district: "",
             housingQuan: "",
             status: "",
+            sqm: "",
         },
         validationSchema: Yup.object({
             name: Yup.string().required("Estate is required."),
@@ -48,6 +50,7 @@ const EstateRegPage = () => {
             brgy: Yup.number().required("Brgy is required."),
             zone: Yup.number().required("Zone is required."),
             district: Yup.number().required("District is required."),
+            sqm: Yup.number().required("Estate size is required."),
         }),
         onSubmit: (value, actions) => {
             axiosClient
@@ -120,6 +123,11 @@ const EstateRegPage = () => {
             label: "No. of Housing",
             minWidth: 170,
         },
+        // {
+        //     id: "sqm",
+        //     label: "SQM",
+        //     minWidth: 170,
+        // },
 
         {
             id: "status",
@@ -137,6 +145,7 @@ const EstateRegPage = () => {
         district,
         housingQuan,
         status
+        // sqm
     ) {
         return {
             id,
@@ -147,6 +156,7 @@ const EstateRegPage = () => {
             district,
             housingQuan,
             status,
+            // sqm,
         };
     }
 
@@ -178,6 +188,7 @@ const EstateRegPage = () => {
                           housingQuan,
                           status,
                           updated_at,
+                          //  sqm,
                       } = dataMap;
 
                       return createData(
@@ -190,6 +201,7 @@ const EstateRegPage = () => {
                           housingQuan,
                           status,
                           updated_at
+                          //   sqm
                       );
                   })
             : [];

@@ -110,7 +110,7 @@ const EstateForms = ({
                         />
                     </Grid>
 
-                    <Grid item xs={2} sm={8} md={12}>
+                    <Grid item xs={2} sm={8} md={8}>
                         <CusFormInput
                             name="address"
                             label="Address"
@@ -124,6 +124,23 @@ const EstateForms = ({
                             error={form.errors.address}
                             touch={form.touched.address}
                             disabled={disabled}
+                        />
+                    </Grid>
+                    <Grid item xs={2} sm={8} md={4}>
+                        <CusFormInput
+                            name="sqm"
+                            label="Square Meters"
+                            required={true}
+                            placeholder={"0"}
+                            value={form.values.sqm}
+                            onChange={form.handleChange}
+                            onBlur={form.handleBlur}
+                            error={form.errors.sqm}
+                            touch={form.touched.sqm}
+                            disabled={disabled}
+                            endAdornment={<div>sq. m</div>}
+                            type="number"
+                            inputProps={{ min: 0, step: "any" }}
                         />
                     </Grid>
                     <Grid item xs={2} sm={8} md={4}>

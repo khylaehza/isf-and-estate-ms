@@ -10,16 +10,20 @@ return new class extends Migration {
      */
     public function up(): void
     {
-        Schema::create('estates', function (Blueprint $table) {
+        Schema::create('isfs', function (Blueprint $table) {
             $table->id();
             $table->string('name')->unique();
-            $table->integer('housingQuan');
-            $table->string('status');
-            $table->string('address');
+            $table->date('bday');
+            $table->string('civilStat');
+            $table->integer('childQuan');
+            $table->string('incomeBracket');
             $table->integer('brgy');
             $table->integer('zone');
             $table->integer('district');
-            $table->float('sqm');
+            $table->string('typeLocation');
+            $table->string('specLocation');
+            $table->string('imgLoc');
+            $table->string('descLocation');
             $table->timestamps();
         });
     }
@@ -29,6 +33,6 @@ return new class extends Migration {
      */
     public function down(): void
     {
-        Schema::dropIfExists('estates');
+        Schema::dropIfExists('isfs');
     }
 };

@@ -129,7 +129,7 @@ const AppBarStyle = styled(AppBar, {
 
 const SideNav = ({ curUser, setCurUser, setToken, children }) => {
     const navigate = useNavigate();
-    const [open, setOpen] = useState(true);
+    const [open, setOpen] = useState(false);
     const location = useLocation();
     const theme = useTheme();
     const { districts, estates } = useData();

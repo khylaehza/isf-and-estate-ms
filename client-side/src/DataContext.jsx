@@ -1,4 +1,5 @@
 import React, { createContext, useState, useContext, useEffect } from "react";
+import { CircularProgress, Box } from "@mui/material";
 import axiosClient from "./axiosClient";
 const DataContext = createContext({
     curUser: null,
@@ -14,6 +15,7 @@ export const DataProvider = ({ children }) => {
     const [users, setUsers] = useState([]);
     const [districts, setDistricts] = useState([]);
     const [estates, setEstates] = useState([]);
+    const [isfs, setISFs] = useState([]);
 
     const brgys = [
         { zone: 1, min: 1, max: 9 },
@@ -131,43 +133,40 @@ export const DataProvider = ({ children }) => {
         if (token) {
             axiosClient.get("/profile").then(({ data }) => {
                 setCurUser(data.data);
-                setLoading(false);
             });
-        }
-    }, [token]);
 
-    useEffect(() => {
-        if (token) {
             axiosClient.get("/user").then((response) => {
                 setUsers(response.data);
-
-                setLoading(false);
             });
-        }
-    }, [token]);
 
-    useEffect(() => {
-        if (token) {
             axiosClient.get("/district").then((response) => {
                 setDistricts(response.data);
-
-                setLoading(false);
             });
-        }
-    }, [token]);
 
-    useEffect(() => {
-        if (token) {
             axiosClient.get("/estate").then((response) => {
                 setEstates(response.data);
-
-                setLoading(false);
             });
+
+            axiosClient.get("/isf").then((response) => {
+                setISFs(response.data);
+            });
+
+            setLoading(false);
         }
     }, [token]);
 
     return token && loading ? (
-        <div>Loading...</div>
+        <Box
+            sx={{
+                display: "flex",
+            }}
+            height={"100vh"}
+            w={"100%"}
+            alignItems={"center"}
+            justifyContent={"center"}
+        >
+            <CircularProgress size={50} />
+        </Box>
     ) : (
         <DataContext.Provider
             value={{
@@ -183,6 +182,8 @@ export const DataProvider = ({ children }) => {
                 estates,
                 setEstates,
                 brgys,
+                setISFs,
+                isfs,
             }}
         >
             {children}

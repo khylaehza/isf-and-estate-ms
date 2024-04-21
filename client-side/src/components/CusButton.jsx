@@ -28,7 +28,13 @@ export const CusPrimBtn = ({
     );
 };
 
-export const CusSecBtn = ({ label, action, type, color = "#4C6085" }) => {
+export const CusSecBtn = ({
+    label,
+    action,
+    type,
+    color = "#4C6085",
+    height,
+}) => {
     return (
         <>
             <Button
@@ -41,9 +47,12 @@ export const CusSecBtn = ({ label, action, type, color = "#4C6085" }) => {
                     },
                     fontWeight: "bold",
                     color: color,
+                    height: 43.5,
+                    borderRadius: 1.5,
                 }}
                 onClick={action}
                 type={type}
+                fullWidth
             >
                 {label}
             </Button>

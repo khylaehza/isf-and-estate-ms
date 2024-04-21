@@ -23,6 +23,7 @@ class EstateController extends Controller
             'address' => 'required|string',
             'brgy' => 'required|integer',
             'zone' => 'required|integer',
+            'sqm' => 'required|numeric',
             'district' => 'required|integer',
         ]);
 

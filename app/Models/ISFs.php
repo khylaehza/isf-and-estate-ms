@@ -5,19 +5,24 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Estate extends Model
+class ISFs extends Model
 {
     use HasFactory;
-    protected $table = 'estates';
+
+    protected $table = 'isfs';
     protected $primaryKey = 'id';
     protected $fillable = [
         'name',
-        'housingQuan',
-        'status',
-        'address',
-        'brgy',
+        'bday',
+        'civilStat',
+        'childQuan',
+        'incomeBracket',
         'zone',
         'district',
-        'sqm',
+        'brgy',
+        'typeLocation',
+        'specLocation',
+        'imgLoc',
+        'descLocation',
     ];
 }

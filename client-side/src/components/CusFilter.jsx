@@ -3,7 +3,12 @@ import { CusIconBtn } from "./CusButton";
 import { Menu, MenuItem, Fade, Typography, ListItemIcon } from "@mui/material";
 import { FilterAltOutlined, Check } from "@mui/icons-material";
 
-const CusFilter = ({ filterBy, setCurFilter, curFilter }) => {
+const CusFilter = ({
+    filterBy,
+    setCurFilter,
+    curFilter,
+    label = "Position",
+}) => {
     const [anchorEl, setAnchorEl] = useState(null);
     const open = Boolean(anchorEl);
     const handleClick = (event) => {
@@ -52,7 +57,7 @@ const CusFilter = ({ filterBy, setCurFilter, curFilter }) => {
                         paddingBottom: 0.5,
                     }}
                 >
-                    By Position
+                    By {label}
                 </Typography>
 
                 {filterBy.map((by, index) => (

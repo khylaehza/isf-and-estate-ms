@@ -8,3 +8,4 @@ export { default as CusSort } from "./CusSort";
 export { default as CusAlert } from "./CusAlert";
 export { default as CusFilter } from "./CusFilter";
 export { default as CusToast } from "./CusToast";
+export { default as CusViewImg } from "./CusViewImg";

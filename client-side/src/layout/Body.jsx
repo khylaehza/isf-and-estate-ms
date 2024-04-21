@@ -36,6 +36,7 @@ const Body = ({
     openToast,
     setOpenToast,
     location,
+    filterLabel,
 }) => {
     const [sortType, setSortType] = useState("Ascending");
     return (
@@ -92,6 +93,7 @@ const Body = ({
                                 filterBy={filterBy}
                                 setCurFilter={setCurFilter}
                                 curFilter={curFilter}
+                                label={filterLabel}
                             />
                         </Stack>
                         <CusPrimBtn

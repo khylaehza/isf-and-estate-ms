@@ -6,7 +6,7 @@ import { InputAdornment, Input } from "@mui/material";
 const CusSearch = ({ setCurSearch, curSearch }) => {
     return (
         <Input
-            placeholder="Search…"
+            placeholder="Search by name"
             inputProps={{ "aria-label": "search" }}
             disableUnderline
             sx={{

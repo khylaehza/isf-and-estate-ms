@@ -6,6 +6,7 @@ import axiosClient from "../axiosClient";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { useParams } from "react-router-dom";
+
 const ISFRegPage = () => {
     const { name } = useParams();
     const [openAdd, setOpenAdd] = useState(false);
@@ -18,7 +19,7 @@ const ISFRegPage = () => {
     const [variant, setVariant] = useState("");
     const [message, setMessage] = useState("");
 
-    const { districts, loading } = useData();
+    const { districts, setISFs, isfs } = useData();
     const districtInfo = districts.find(
         (dst) => `district${dst.name}` === name
     );
@@ -29,16 +30,28 @@ const ISFRegPage = () => {
         civilStat: "",
         childQuan: "",
         incomeBracket: "",
-        district: districtInfo.name,
+        district: "",
         zone: "",
         brgy: "",
         typeLocation: "",
         specLocation: "",
-        imgLoc: "",
         descLocation: "",
+        imgLoc: "",
     });
 
-    const filterBy = ["All"];
+    const filterBy = [
+        "Government Properties",
+        "Public Properties",
+        "Private Properties",
+        "Others",
+        "All",
+    ];
+    const SUPPORTED_FORMATS = [
+        "image/jpg",
+        "image/jpeg",
+        "image/gif",
+        "image/png",
+    ];
 
     const form = useFormik({
         initialValues: {
@@ -47,7 +60,7 @@ const ISFRegPage = () => {
             civilStat: "",
             childQuan: "",
             incomeBracket: "",
-            district: districtInfo.name,
+            district: districtInfo ? districtInfo.name : "",
             zone: "",
             brgy: "",
             typeLocation: "",
@@ -57,40 +70,44 @@ const ISFRegPage = () => {
         },
         enableReinitialize: true,
         validationSchema: Yup.object({
-            //  name: Yup.string().required("Estate is required."),
-            //  housingQuan: Yup.number().required(
-            //      "Housing quantity is required."
-            //  ),
-            //  status: Yup.string().required("Status is required."),
-            //  address: Yup.string().required("Address is required."),
-            //  brgy: Yup.number().required("Brgy is required."),
-            //  zone: Yup.number().required("Zone is required."),
-            //  district: Yup.number().required("District is required."),
+            name: Yup.string().required("Head of the family is required."),
+            bday: Yup.string().required("Birthday is required."),
+            civilStat: Yup.string().required("Civil Status is required."),
+            incomeBracket: Yup.string().required("Income bracket is required."),
+            brgy: Yup.number().required("Brgy is required."),
+            zone: Yup.number().required("Zone is required."),
+            district: Yup.number().required("District is required."),
+            typeLocation: Yup.string().required("Location type is required."),
+            specLocation: Yup.string().required(
+                "Specific location is required."
+            ),
+            imgLoc: Yup.mixed().test(
+                "fileFormat",
+                "Image format must be jpg/jpeg/gif/png only.",
+                (value) => value && SUPPORTED_FORMATS.includes(value.type)
+            ),
         }),
         onSubmit: (value, actions) => {
-            setVariant("error");
-            setMessage("crud function to be added");
-            setOpenToast(true);
+            axiosClient
+                .post("/isf", value)
+                .then((data) => {
+                    if (data.status == 200 || data.status == 201) {
+                        setISFs([...isfs, data.data]);
+                        setVariant("success");
+                        setMessage("ISF successfully added.");
+                        setOpenToast(true);
+                    } else {
+                        console.log(data.data.message);
+                    }
+                })
+                .catch((error) => {
+                    setVariant(error.response.data.message);
+                    setMessage(error.response.data.message);
+                    setOpenToast(true);
+                    console.log(error);
+                });
             setOpenAdd(false);
-            //  axiosClient
-            //      .post("/estate", value)
-            //      .then((data) => {
-            //          if (data.status == 200 || data.status == 201) {
-            //              setEstates([...estates, data.data]);
-            //              setVariant("success");
-            //              setMessage("Estate successfully added.");
-            //              setOpenToast(true);
-            //          } else {
-            //              console.log(data.data.message);
-            //          }
-            //      })
-            //      .catch((error) => {
-            //          setVariant("error");
-            //          setMessage(error.response.data.message);
-            //          setOpenToast(true);
-            //      });
-            //  setOpenAdd(false);
-            //  actions.resetForm();
+            actions.resetForm();
         },
     });
 
@@ -98,55 +115,65 @@ const ISFRegPage = () => {
         initialValues: curRow,
         enableReinitialize: true,
         onSubmit: (value, actions) => {
-            //  axiosClient
-            //      .put(`/estate/${value.id}`, value)
-            //      .then((data) => {
-            //          if (data.status == 200 || data.status == 201) {
-            //              setEstates(
-            //                  estates.map((estate) =>
-            //                      estate.id === data.data.id ? data.data : estate
-            //                  )
-            //              );
-            //              setVariant("success");
-            //              setMessage("Estate successfully edited.");
-            //              setOpenToast(true);
-            //          } else {
-            //              console.log(data.message);
-            //          }
-            //      })
-            //      .catch((error) => {
-            //          setVariant("error");
-            //          setMessage(error.response.data.message);
-            //          setOpenToast(true);
-            //      });
-            //  setOpenEdit(false);
+            axiosClient
+                .post(`/isf/${value.id}`, { ...value, _method: "PUT" })
+                .then((data) => {
+                    if (data.status == 200 || data.status == 201) {
+                        console.log(data.data, data);
+                        setISFs(
+                            isfs.map((isf) =>
+                                isf.id === data.data.id ? data.data : isf
+                            )
+                        );
+                        setVariant("success");
+                        setMessage("ISF successfully edited.");
+                        setOpenToast(true);
+                    } else {
+                        console.log(data.message);
+                    }
+                })
+                .catch((error) => {
+                    setVariant("error");
+                    setMessage(error.response.data.message);
+                    setOpenToast(true);
+                });
+            setOpenEdit(false);
         },
     });
 
     const columns = [
-        { id: "id", label: "ID", minWidth: 100 },
+        { id: "id", label: "ID", minWidth: 50 },
         { id: "name", label: "Head of the Family", minWidth: 170 },
         {
-            id: "income",
+            id: "incomeBracket",
             label: "Income Bracket",
-            minWidth: 170,
+            minWidth: 50,
         },
 
         {
             id: "brgy",
             label: "Brgy",
-            minWidth: 140,
+            minWidth: 50,
         },
         {
-            id: "children",
-            label: "No. of Children",
-            minWidth: 170,
+            id: "zone",
+            label: "Zone",
+            minWidth: 50,
         },
-
+        {
+            id: "childQuan",
+            label: "No. of Children",
+            minWidth: 50,
+        },
+        {
+            id: "typeLocation",
+            label: "Location Type",
+            minWidth: 100,
+        },
         {
             id: "specLocation",
             label: "Specific Location",
-            minWidth: 150,
+            minWidth: 100,
         },
     ];
 
@@ -160,9 +187,11 @@ const ISFRegPage = () => {
         childQuan,
         civilStat,
         descLocation,
-        brgy,
         zone,
-        imgLoc
+        brgy,
+        district,
+        imgLoc,
+        updated_at
     ) {
         return {
             id,
@@ -174,29 +203,83 @@ const ISFRegPage = () => {
             childQuan,
             civilStat,
             descLocation,
-            brgy,
             zone,
+            brgy,
+            district,
             imgLoc,
+            updated_at,
         };
     }
 
-    let rows = [];
+    let rows =
+        isfs.length > 0
+            ? isfs
+                  .filter((data) => {
+                      return data.district == districtInfo.name;
+                  })
+                  .filter((data) => {
+                      return curSearch.toLowerCase() === ""
+                          ? data
+                          : data.name
+                                .toLowerCase()
+                                .includes(curSearch.toLowerCase());
+                  })
+                  .filter((data) => {
+                      return curFilter == "" || curFilter == "All"
+                          ? data
+                          : curFilter == data.typeLocation;
+                  })
+                  .map((dataMap) => {
+                      const {
+                          id,
+                          name,
+                          specLocation,
+                          typeLocation,
+                          bday,
+                          incomeBracket,
+                          childQuan,
+                          civilStat,
+                          descLocation,
+                          district,
+                          brgy,
+                          zone,
+                          imgLoc,
+                          updated_at,
+                      } = dataMap;
+                      return createData(
+                          id,
+                          name,
+                          specLocation,
+                          typeLocation,
+                          bday,
+                          incomeBracket,
+                          childQuan,
+                          civilStat,
+                          descLocation,
+                          zone,
+                          brgy,
+                          district,
+                          imgLoc,
+                          updated_at
+                      );
+                  })
+            : [];
 
     const handleDelete = () => {
-        // axiosClient
-        //     .delete(`/estate/${curRow.id}`)
-        //     .then(() => {
-        //         setEstates(estates.filter((estate) => estate.id !== curRow.id));
-        //         setOpenDel(false);
-        //         setVariant("success");
-        //         setMessage("Estate successfully deleted.");
-        //         setOpenToast(true);
-        //     })
-        //     .catch((error) => {
-        //         setVariant("error");
-        //         setMessage(error.response.data.message);
-        //         setOpenToast(true);
-        //     });
+        axiosClient
+            .delete(`/isf/${curRow.id}`)
+            .then(() => {
+                setISFs(isfs.filter((isf) => isf.id !== curRow.id));
+                setOpenDel(false);
+                setVariant("success");
+                setMessage("ISF successfully deleted.");
+                setOpenToast(true);
+            })
+            .catch((error) => {
+                setVariant("error");
+                setMessage(error.response.data.message);
+                setOpenToast(true);
+            });
     };
 
     return (
@@ -224,6 +307,7 @@ const ISFRegPage = () => {
                             action={() => {
                                 setOpenAdd(false);
                                 form.resetForm();
+                                // form.setFieldValue("imgLoc", null);
                             }}
                         />
                     }
@@ -257,6 +341,7 @@ const ISFRegPage = () => {
                     setCurFilter={setCurFilter}
                     filterBy={filterBy}
                     curFilter={curFilter}
+                    filterLabel={"Location Type"}
                     setOpenView={setOpenView}
                     setOpenDel={setOpenDel}
                     openDel={openDel}

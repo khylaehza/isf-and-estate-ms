@@ -1,6 +1,8 @@
 import { Grid } from "@mui/material";
-import { CusFormInput, CusSelect, CusModal } from "../components";
+import { CusFormInput, CusSelect, CusModal, CusViewImg } from "../components";
 import { useData } from "../DataContext";
+import { IMAGE_URL } from "../fileConstant";
+
 const ISFForms = ({
     label,
     form,
@@ -20,7 +22,29 @@ const ISFForms = ({
         "Private Properties",
         "Others",
     ];
-    const specLocationList = ["Near River", "Others"];
+    const specLocationList = [
+        "San Juan River",
+        "Estero de Sunog Apog",
+        "Estero de Maypajo",
+        "Pasig River",
+        "Estero de Paco",
+        "Estero de San Miguel",
+        "Estero de Valencia",
+        "Estero de Quiapo",
+        "Estero de Sampaloc",
+        "Estero dela Reina",
+        "Estero de Pandacan",
+        "Estero de Sta. Clara",
+        "Estero de Vitas",
+        "Estero de San Lazaro",
+        "Estero de Magdalena",
+        "Estero de Kabulusan",
+        "Estero de San Sebastian",
+        "Pasig River Parola",
+        "Tripa De Galina",
+        "Maybuhangin Creek",
+        "Others",
+    ];
     const incomeBracketList = [
         "Rich (₱182,000 and up)",
         "High Income (₱109,200 - ₱182,000)",
@@ -73,7 +97,7 @@ const ISFForms = ({
                     spacing={{ xs: 2, md: 3 }}
                     columns={{ xs: 1, sm: 8, md: 12 }}
                 >
-                    <Grid item xs={2} sm={8} md={4}>
+                    <Grid item xs={2} sm={8} md={6}>
                         <CusFormInput
                             name="name"
                             label="Head of the Family"
@@ -89,7 +113,7 @@ const ISFForms = ({
                             disabled={disabled}
                         />
                     </Grid>
-                    <Grid item xs={2} sm={4} md={4}>
+                    <Grid item xs={2} sm={4} md={3.2}>
                         <CusFormInput
                             name="bday"
                             label="Date of Birth"
@@ -101,25 +125,10 @@ const ISFForms = ({
                             error={form.errors.bday}
                             touch={form.touched.bday}
                             disabled={disabled}
+                            type={"date"}
                         />
                     </Grid>
-
-                    <Grid item xs={2} sm={4} md={4}>
-                        <CusSelect
-                            name="civilStats"
-                            label="Civil Status"
-                            required={true}
-                            value={form.values.civilStats}
-                            onChange={form.handleChange}
-                            items={civilStatsList}
-                            onBlur={form.handleBlur}
-                            error={form.errors.civilStats}
-                            touch={form.touched.civilStats}
-                            disabled={disabled}
-                        />
-                    </Grid>
-
-                    <Grid item xs={2} sm={4} md={4}>
+                    <Grid item xs={2} sm={4} md={2.8}>
                         <CusFormInput
                             name="childQuan"
                             label="No. Of Children"
@@ -135,6 +144,21 @@ const ISFForms = ({
                             inputProps={{ min: 0, max: 100 }}
                         />
                     </Grid>
+                    <Grid item xs={2} sm={4} md={4}>
+                        <CusSelect
+                            name="civilStat"
+                            label="Civil Status"
+                            required={true}
+                            value={form.values.civilStat}
+                            onChange={form.handleChange}
+                            items={civilStatsList}
+                            onBlur={form.handleBlur}
+                            error={form.errors.civilStat}
+                            touch={form.touched.civilStat}
+                            disabled={disabled}
+                        />
+                    </Grid>
+
                     <Grid item xs={2} sm={4} md={8}>
                         <CusSelect
                             name="incomeBracket"
@@ -199,7 +223,7 @@ const ISFForms = ({
                             disabled={disabled}
                         />
                     </Grid>
-                    <Grid item xs={2} sm={4} md={4}>
+                    <Grid item xs={2} sm={4} md={6}>
                         <CusSelect
                             name="specLocation"
                             label="Specific Location"
@@ -213,27 +237,41 @@ const ISFForms = ({
                             disabled={disabled}
                         />
                     </Grid>
-                    <Grid item xs={2} sm={4} md={8}>
-                        <CusFormInput
-                            name="imgLoc"
-                            label="Location Image"
-                            required={true}
-                            placeholder={"0"}
-                            value={form.values.imgLoc}
-                            onChange={form.handleChange}
-                            onBlur={form.handleBlur}
-                            error={form.errors.imgLoc}
-                            touch={form.touched.imgLoc}
-                            disabled={disabled}
-                            type="file"
-                        />
+                    <Grid item xs={2} sm={4} md={6}>
+                        {method == "VIEW" ? (
+                            <CusViewImg
+                                src={`${IMAGE_URL}isf/${form.values.imgLoc}`}
+                                alt={form.values.imgLoc}
+                            />
+                        ) : (
+                            <CusFormInput
+                                name="imgLoc"
+                                label="Location Image"
+                                placeholder={
+                                    method == "VIEW"
+                                        ? form.values.imgLoc
+                                        : "Image"
+                                }
+                                onChange={(e) => {
+                                    form.setFieldValue(
+                                        "imgLoc",
+                                        e.target.files[0]
+                                    );
+                                }}
+                                onBlur={form.handleBlur}
+                                error={form.errors.imgLoc}
+                                touch={form.touched.imgLoc}
+                                disabled={disabled}
+                                type={method == "VIEW" ? "text" : "file"}
+                            />
+                        )}
                     </Grid>
+
                     <Grid item xs={2} sm={4} md={12}>
                         <CusFormInput
                             name="descLocation"
                             label="Location Description"
-                            required={true}
-                            placeholder={"0"}
+                            placeholder={"Add description here..."}
                             value={form.values.descLocation}
                             onChange={form.handleChange}
                             onBlur={form.handleBlur}
