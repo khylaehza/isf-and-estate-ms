@@ -80,7 +80,7 @@ const EstateRegPage = () => {
         enableReinitialize: true,
         onSubmit: (value, actions) => {
             axiosClient
-                .put(`/estate/${value.id}`, value)
+                .post(`/estate/${value.id}`, { ...value, _method: "PUT" })
                 .then((data) => {
                     if (data.status == 200 || data.status == 201) {
                         setEstates(

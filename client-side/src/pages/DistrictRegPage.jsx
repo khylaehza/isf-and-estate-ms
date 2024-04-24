@@ -83,7 +83,7 @@ const DistrictRegPage = () => {
         enableReinitialize: true,
         onSubmit: (value, actions) => {
             axiosClient
-                .put(`/district/${value.id}`, value)
+                .post(`/district/${value.id}`, { ...value, _method: "PUT" })
                 .then((data) => {
                     if (data.status == 200 || data.status == 201) {
                         setDistricts(

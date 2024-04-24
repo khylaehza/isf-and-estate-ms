@@ -27,6 +27,19 @@ function App() {
                     },
                 },
             },
+            MuiAutocomplete: {
+                styleOverrides: {
+                    root: {
+                        "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
+                            borderColor: "black",
+                            borderWidth: "1px",
+                        },
+                    },
+                    input: {
+                        fontSize: 12,
+                    },
+                },
+            },
         },
     });
 

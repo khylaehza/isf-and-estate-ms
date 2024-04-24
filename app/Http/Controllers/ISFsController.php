@@ -29,8 +29,8 @@ class ISFsController extends Controller
             'brgy' => 'required|integer',
             'typeLocation' => 'required|string',
             'specLocation' => 'required|string',
-            'imgLoc' => 'image|mimes:jpg,png,jpeg,gif,svg|max:2048',
-            'descLocation' => 'required|string',
+            'imgLoc' => 'nullable|image|mimes:jpg,png,jpeg,gif,svg|max:2048',
+            'descLocation' => 'nullable|string',
         ]);
 
         $imgLocName = $request->file('imgLoc')->getClientOriginalName();

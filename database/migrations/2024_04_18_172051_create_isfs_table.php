@@ -22,8 +22,8 @@ return new class extends Migration {
             $table->integer('district');
             $table->string('typeLocation');
             $table->string('specLocation');
-            $table->string('imgLoc');
-            $table->string('descLocation');
+            $table->string('imgLoc')->nullable();
+            $table->string('descLocation')->nullable();
             $table->timestamps();
         });
     }

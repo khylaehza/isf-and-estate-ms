@@ -16,6 +16,7 @@ export const DataProvider = ({ children }) => {
     const [districts, setDistricts] = useState([]);
     const [estates, setEstates] = useState([]);
     const [isfs, setISFs] = useState([]);
+    const [awardees, setAwardees] = useState([]);
 
     const brgys = [
         { zone: 1, min: 1, max: 9 },
@@ -151,6 +152,10 @@ export const DataProvider = ({ children }) => {
                 setISFs(response.data);
             });
 
+            axiosClient.get("/awardee").then((response) => {
+                setAwardees(response.data);
+            });
+
             setLoading(false);
         }
     }, [token]);
@@ -184,6 +189,8 @@ export const DataProvider = ({ children }) => {
                 brgys,
                 setISFs,
                 isfs,
+                setAwardees,
+                awardees,
             }}
         >
             {children}
