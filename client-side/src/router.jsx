@@ -5,6 +5,7 @@ import {
     EstateRegPage,
     ISFRegPage,
     AwardeeRegPage,
+    ActivityLogsPage,
 } from "./pages";
 import { createBrowserRouter } from "react-router-dom";
 import { AdminPages } from "./default";
@@ -22,6 +23,7 @@ const router = createBrowserRouter([
             { path: "/estate", element: <EstateRegPage /> },
             { path: "/isf/:name", element: <ISFRegPage /> },
             { path: "/estate/:name", element: <AwardeeRegPage /> },
+            { path: "/logs", element: <ActivityLogsPage /> },
         ],
     },
 ]);

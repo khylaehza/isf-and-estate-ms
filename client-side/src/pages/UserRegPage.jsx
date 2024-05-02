@@ -29,7 +29,7 @@ const UserRegPage = () => {
         updated_at: "",
     });
 
-    const { users, setUsers } = useData();
+    const { users, setUsers, curUser } = useData();
 
     const filterBy = [
         "Super Admin",
@@ -70,9 +70,23 @@ const UserRegPage = () => {
                         if (data.status == 200 || data.status == 201) {
                             setUsers([...users, data.data]);
 
-                            setVariant("success");
-                            setMessage("User successfully added.");
-                            setOpenToast(true);
+                            axiosClient
+                                .post("/activity", {
+                                    name: `${curUser.fname} ${curUser.lname}`,
+                                    activity: `Added ${value.fname} ${value.lname} at User Registration.`,
+                                })
+                                .then((data) => {
+                                    if (
+                                        data.status == 200 ||
+                                        data.status == 201
+                                    ) {
+                                        setVariant("success");
+                                        setMessage("User successfully added.");
+                                        setOpenToast(true);
+                                    } else {
+                                        console.log(data.data.message);
+                                    }
+                                });
                         } else {
                             console.log(data.data.message);
                         }
@@ -107,9 +121,21 @@ const UserRegPage = () => {
                                 user.id === data.data.id ? data.data : user
                             )
                         );
-                        setVariant("success");
-                        setMessage("User successfully edited.");
-                        setOpenToast(true);
+
+                        axiosClient
+                            .post("/activity", {
+                                name: `${curUser.fname} ${curUser.lname}`,
+                                activity: `Edited ${value.fname} ${value.lname} at User Registration.`,
+                            })
+                            .then((data) => {
+                                if (data.status == 200 || data.status == 201) {
+                                    setVariant("success");
+                                    setMessage("User successfully edited.");
+                                    setOpenToast(true);
+                                } else {
+                                    console.log(data.data.message);
+                                }
+                            });
                     } else {
                         console.log(data.data.message);
                     }
@@ -226,10 +252,22 @@ const UserRegPage = () => {
             .delete(`/user/${curRow.id}`)
             .then(() => {
                 setUsers(users.filter((user) => user.id !== curRow.id));
-                setOpenDel(false);
-                setVariant("success");
-                setMessage("User successfully deleted.");
-                setOpenToast(true);
+
+                axiosClient
+                    .post("/activity", {
+                        name: `${curUser.fname} ${curUser.lname}`,
+                        activity: `Deleted ${curRow.fname} ${curRow.lname} at User Registration.`,
+                    })
+                    .then((data) => {
+                        if (data.status == 200 || data.status == 201) {
+                            setOpenDel(false);
+                            setVariant("success");
+                            setMessage("User successfully deleted.");
+                            setOpenToast(true);
+                        } else {
+                            console.log(data.data.message);
+                        }
+                    });
             })
             .catch((error) => {
                 setVariant("error");

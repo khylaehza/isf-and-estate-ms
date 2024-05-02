@@ -9,6 +9,7 @@ use App\Http\Controllers\Registration\DistrictController;
 use App\Http\Controllers\Registration\EstateController;
 use App\Http\Controllers\ISFsController;
 use App\Http\Controllers\AwardeeController;
+use App\Http\Controllers\ActivityController;
 
 Route::post('register', [AuthController::class, 'register']);
 Route::post('login', [AuthController::class, 'login']);
@@ -19,6 +20,7 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::resource('estate', EstateController::class);
     Route::resource('isf', ISFsController::class);
     Route::resource('awardee', AwardeeController::class);
+    Route::resource('activity', ActivityController::class);
     Route::get('profile', [AuthController::class, 'profile']);
     Route::get('logout', [AuthController::class, 'logout']);
 });

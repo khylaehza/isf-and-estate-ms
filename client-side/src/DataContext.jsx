@@ -17,6 +17,7 @@ export const DataProvider = ({ children }) => {
     const [estates, setEstates] = useState([]);
     const [isfs, setISFs] = useState([]);
     const [awardees, setAwardees] = useState([]);
+    const [logs, setLogs] = useState([]);
 
     const brgys = [
         { zone: 1, min: 1, max: 9 },
@@ -123,7 +124,7 @@ export const DataProvider = ({ children }) => {
 
     const setToken = (token) => {
         _setToken(token);
-        if (token) {
+        if (token && curUser) {
             localStorage.setItem("ACCESS_TOKEN", token);
         } else {
             localStorage.removeItem("ACCESS_TOKEN");
@@ -154,6 +155,10 @@ export const DataProvider = ({ children }) => {
 
             axiosClient.get("/awardee").then((response) => {
                 setAwardees(response.data);
+            });
+
+            axiosClient.get("/activity").then((response) => {
+                setLogs(response.data);
             });
 
             setLoading(false);
@@ -191,6 +196,7 @@ export const DataProvider = ({ children }) => {
                 isfs,
                 setAwardees,
                 awardees,
+                logs,
             }}
         >
             {children}
