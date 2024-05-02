@@ -3,10 +3,10 @@ import * as React from "react";
 import { Search } from "@mui/icons-material";
 import { InputAdornment, Input } from "@mui/material";
 
-const CusSearch = ({ setCurSearch, curSearch }) => {
+const CusSearch = ({ setCurSearch, curSearch, label = "name" }) => {
     return (
         <Input
-            placeholder="Search by name"
+            placeholder={`Search by ${label}`}
             inputProps={{ "aria-label": "search" }}
             disableUnderline
             sx={{

@@ -11,3 +11,4 @@ export { default as CusToast } from "./CusToast";
 export { default as CusViewImg } from "./CusViewImg";
 export { default as CusDownload } from "./CusDownload";
 export { default as CusFreeMul } from "./CusFreeMul";
+export { default as CusTableLog } from "./CusTableLog";
