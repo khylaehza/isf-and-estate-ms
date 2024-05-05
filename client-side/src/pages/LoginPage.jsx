@@ -27,7 +27,7 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 
 const LoginPage = () => {
-    const { token, setToken } = useData();
+    const { token, setToken, setRole, setCurUser } = useData();
     const [showPassword, setShowPassword] = useState(false);
     const [logError, setLogError] = useState("");
 
@@ -53,6 +53,9 @@ const LoginPage = () => {
                 .then((data) => {
                     if (data.data.status) {
                         setToken(data.data.token);
+                        let userRole = data.data.user;
+                        setCurUser(userRole);
+                        setRole(userRole.role);
                     } else {
                         setLogError(data.data.message);
                     }
@@ -64,6 +67,7 @@ const LoginPage = () => {
             actions.resetForm();
         },
     });
+
     if (token != null) {
         return <Navigate to={"/"} />;
     }

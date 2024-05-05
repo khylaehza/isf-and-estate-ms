@@ -6,6 +6,7 @@ export const CusPrimBtn = ({
     type,
     color = "#4C6085",
     hover = "#3C4D6C",
+    w = "100%",
 }) => {
     return (
         <>
@@ -17,9 +18,11 @@ export const CusPrimBtn = ({
                         backgroundColor: hover,
                     },
                     fontWeight: "bold",
+                    width: w,
                 }}
                 onClick={action}
                 type={type}
+
                 // fullWidth
             >
                 {label}
@@ -67,6 +70,8 @@ export const CusIconBtn = ({
     color = "#E0EBF2",
     action,
     label,
+    text,
+    hover = "#EFF1F4",
     ...props
 }) => {
     return (
@@ -81,13 +86,15 @@ export const CusIconBtn = ({
                 borderRadius: 1,
                 borderWidth: 2,
                 bgcolor: color,
-
-                // boxShadow: "0px 0px 5px rgba(28, 48, 85, 0.4)",
+                "&:hover": {
+                    bgcolor: hover,
+                },
             }}
             onClick={action}
             {...props}
         >
             {icon}
+            {text}
         </IconButton>
     );
 };

@@ -74,6 +74,7 @@ const UserRegPage = () => {
                                 .post("/activity", {
                                     name: `${curUser.fname} ${curUser.lname}`,
                                     activity: `Added ${value.fname} ${value.lname} at User Registration.`,
+                                    type: "Added",
                                 })
                                 .then((data) => {
                                     if (
@@ -126,6 +127,7 @@ const UserRegPage = () => {
                             .post("/activity", {
                                 name: `${curUser.fname} ${curUser.lname}`,
                                 activity: `Edited ${value.fname} ${value.lname} at User Registration.`,
+                                type: "Edited",
                             })
                             .then((data) => {
                                 if (data.status == 200 || data.status == 201) {
@@ -257,6 +259,7 @@ const UserRegPage = () => {
                     .post("/activity", {
                         name: `${curUser.fname} ${curUser.lname}`,
                         activity: `Deleted ${curRow.fname} ${curRow.lname} at User Registration.`,
+                        type: "Deleteed",
                     })
                     .then((data) => {
                         if (data.status == 200 || data.status == 201) {

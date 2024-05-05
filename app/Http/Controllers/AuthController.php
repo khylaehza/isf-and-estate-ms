@@ -59,6 +59,7 @@ class AuthController extends Controller
                     'status' => true,
                     'message' => 'User logged in.',
                     'token' => $token,
+                    'user' => $user
                 ]);
             } else {
                 return response()->json([

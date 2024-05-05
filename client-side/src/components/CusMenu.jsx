@@ -2,8 +2,10 @@ import { Menu, MenuItem, IconButton, Avatar } from "@mui/material";
 import { useState } from "react";
 import axiosClient from "../axiosClient";
 import { useNavigate } from "react-router-dom";
-const CusMenu = ({ setToken, setCurUser }) => {
+import { Person } from "@mui/icons-material";
+const CusMenu = ({ setToken, setCurUser, setRole }) => {
     const [anchorEl, setAnchorEl] = useState(null);
+    const navigate = useNavigate();
     const open = Boolean(anchorEl);
     const handleClick = (event) => {
         setAnchorEl(event.currentTarget);
@@ -14,9 +16,12 @@ const CusMenu = ({ setToken, setCurUser }) => {
 
     const handleLogOut = () => {
         setAnchorEl(null);
+
         axiosClient.get("/logout").then(() => {
             setToken(null);
+            setRole(null);
             setCurUser(null);
+            navigate("/login");
         });
     };
 
@@ -29,7 +34,9 @@ const CusMenu = ({ setToken, setCurUser }) => {
                 aria-haspopup="true"
                 aria-expanded={open ? "true" : undefined}
             >
-                <Avatar sx={{ width: 26, height: 26, fontSize: 12 }}>H</Avatar>
+                <Avatar sx={{ width: 26, height: 26, fontSize: 12 }}>
+                    <Person sx={{ fontSize: 18 }} />
+                </Avatar>
             </IconButton>
 
             <Menu

@@ -10,6 +10,9 @@ const DataContext = createContext({
 
 export const DataProvider = ({ children }) => {
     const [curUser, setCurUser] = useState({});
+    const [curUserRole, _setCurUserRole] = useState(
+        localStorage.getItem("ACCESS_ROLE")
+    );
     const [token, _setToken] = useState(localStorage.getItem("ACCESS_TOKEN"));
     const [loading, setLoading] = useState(true);
     const [users, setUsers] = useState([]);
@@ -124,10 +127,19 @@ export const DataProvider = ({ children }) => {
 
     const setToken = (token) => {
         _setToken(token);
-        if (token && curUser) {
+        if (token) {
             localStorage.setItem("ACCESS_TOKEN", token);
         } else {
             localStorage.removeItem("ACCESS_TOKEN");
+        }
+    };
+
+    const setRole = (role) => {
+        _setCurUserRole(role);
+        if (role) {
+            localStorage.setItem("ACCESS_ROLE", role);
+        } else {
+            localStorage.removeItem("ACCESS_ROLE");
         }
     };
 
@@ -197,6 +209,8 @@ export const DataProvider = ({ children }) => {
                 setAwardees,
                 awardees,
                 logs,
+                curUserRole,
+                setRole,
             }}
         >
             {children}

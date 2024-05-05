@@ -1,12 +1,10 @@
 import { Navigate, Outlet, useLocation } from "react-router-dom";
 import { useData } from "../DataContext";
 import { SideNav } from "../layout";
-import { HomePage } from "../pages";
 
 const AdminPages = () => {
-    const { curUser, token, setToken, setCurUser } = useData();
-    const location = useLocation();
-
+    const { curUser, token, setToken, setCurUser, setRole, curUserRole } =
+        useData();
     if (!token) {
         return <Navigate to={"/login"} />;
     }
@@ -18,9 +16,9 @@ const AdminPages = () => {
                     curUser={curUser}
                     setCurUser={setCurUser}
                     setToken={setToken}
-                    children={
-                        location.pathname === "/" ? <HomePage /> : <Outlet />
-                    }
+                    setRole={setRole}
+                    curUserRole={curUserRole}
+                    children={<Outlet />}
                 />
             )}
         </>

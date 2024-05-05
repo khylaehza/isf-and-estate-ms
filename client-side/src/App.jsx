@@ -1,7 +1,6 @@
 import "./App.css";
 import { createTheme, ThemeProvider } from "@mui/material";
-import router from "./router";
-import { RouterProvider } from "react-router-dom";
+import RoutesNav from "./RoutesNav";
 import { DataProvider } from "./DataContext";
 
 function App() {
@@ -46,7 +45,7 @@ function App() {
     return (
         <ThemeProvider theme={theme}>
             <DataProvider>
-                <RouterProvider router={router} />
+                <RoutesNav />
             </DataProvider>
         </ThemeProvider>
     );

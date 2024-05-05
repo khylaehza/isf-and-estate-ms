@@ -134,7 +134,14 @@ const AppBarStyle = styled(AppBar, {
     }),
 }));
 
-const SideNav = ({ curUser, setCurUser, setToken, children }) => {
+const SideNav = ({
+    curUser,
+    setCurUser,
+    setToken,
+    children,
+    setRole,
+    curUserRole,
+}) => {
     const navigate = useNavigate();
     const [open, setOpen] = useState(false);
     const location = useLocation();
@@ -192,6 +199,7 @@ const SideNav = ({ curUser, setCurUser, setToken, children }) => {
     const menuData = [
         {
             name: "Dashboard",
+            access: ["Super Admin", "Admin", "ISF Admin", "Estate Admin"],
             icon:
                 location.pathname == "/" ? (
                     <DashboardRounded sx={{ color: "#4C6085" }} />
@@ -206,6 +214,7 @@ const SideNav = ({ curUser, setCurUser, setToken, children }) => {
         },
         {
             name: "Registration",
+            access: ["Super Admin"],
             icon:
                 location.pathname == "/user" ||
                 location.pathname == "/district" ||
@@ -245,6 +254,7 @@ const SideNav = ({ curUser, setCurUser, setToken, children }) => {
         },
         {
             name: "ISFs",
+            access: ["Super Admin", "Admin", "ISF Admin"],
             icon:
                 location.pathname == curLocISF ? (
                     <GroupsRounded sx={{ color: "#4C6085" }} />
@@ -259,7 +269,8 @@ const SideNav = ({ curUser, setCurUser, setToken, children }) => {
             open: isfMenu,
         },
         {
-            name: "Estate Awardees",
+            name: "Estate",
+            access: ["Super Admin", "Admin", "Estate Admin"],
             icon:
                 location.pathname == curLocEstate ? (
                     <HomeWorkRounded sx={{ color: "#4C6085" }} />
@@ -272,12 +283,12 @@ const SideNav = ({ curUser, setCurUser, setToken, children }) => {
             action: () => {
                 setOpen(true);
                 openEstOpen(!estMenu);
-                console.log("home");
             },
             open: estMenu,
         },
         {
             name: "Activity Logs",
+            access: ["Super Admin"],
             icon:
                 location.pathname == "/logs" ? (
                     <ReceiptLongRounded sx={{ color: "#4C6085" }} />
@@ -343,7 +354,11 @@ const SideNav = ({ curUser, setCurUser, setToken, children }) => {
                             </Typography>
                         </Stack>
 
-                        <CusMenu setToken={setToken} setCurUser={setCurUser} />
+                        <CusMenu
+                            setToken={setToken}
+                            setCurUser={setCurUser}
+                            setRole={setRole}
+                        />
                     </Stack>
                 </Toolbar>
             </AppBarStyle>
@@ -420,142 +435,150 @@ const SideNav = ({ curUser, setCurUser, setToken, children }) => {
                         <List>
                             {menuData.map((data, index) => {
                                 let menu = data.menus;
-                                return (
-                                    <ListItem
-                                        key={index}
-                                        disablePadding
-                                        sx={{
-                                            display: "block",
-                                        }}
-                                    >
-                                        <ListItemButton
+                                let access = data.access;
+
+                                if (access.includes(curUserRole)) {
+                                    return (
+                                        <ListItem
+                                            key={index}
+                                            disablePadding
                                             sx={{
-                                                minHeight: 48,
-                                                justifyContent: open
-                                                    ? "initial"
-                                                    : "center",
-                                                px: 2.5,
+                                                display: "block",
                                             }}
-                                            onClick={data.action}
                                         >
-                                            <ListItemIcon
+                                            <ListItemButton
                                                 sx={{
-                                                    minWidth: 0,
-                                                    mr: open ? 3 : "auto",
-                                                    justifyContent: "center",
+                                                    minHeight: 48,
+                                                    justifyContent: open
+                                                        ? "initial"
+                                                        : "center",
+                                                    px: 2.5,
                                                 }}
+                                                onClick={data.action}
                                             >
-                                                {data.icon}
-                                            </ListItemIcon>
-                                            <ListItemText
-                                                sx={{
-                                                    opacity: open ? 1 : 0,
-                                                }}
-                                            >
-                                                <Typography
-                                                    variant="body1"
-                                                    style={{
-                                                        fontSize: 14,
-                                                        fontWeight: "bold",
-                                                        color: "#1C3055",
+                                                <ListItemIcon
+                                                    sx={{
+                                                        minWidth: 0,
+                                                        mr: open ? 3 : "auto",
+                                                        justifyContent:
+                                                            "center",
                                                     }}
                                                 >
-                                                    {data.name}
-                                                </Typography>
-                                            </ListItemText>
-                                            {data.name != "Dashboard" &&
-                                                data.name !=
-                                                    "Activity Logs" && (
-                                                    <>
-                                                        {data.open ? (
-                                                            <ExpandLessRounded
-                                                                sx={{
-                                                                    ...(!open && {
-                                                                        display:
-                                                                            "none",
-                                                                    }),
-                                                                }}
-                                                            />
-                                                        ) : (
-                                                            <ExpandMoreRounded
-                                                                sx={{
-                                                                    ...(!open && {
-                                                                        display:
-                                                                            "none",
-                                                                    }),
-                                                                }}
-                                                            />
-                                                        )}
-                                                    </>
-                                                )}
-                                        </ListItemButton>
-
-                                        <Collapse
-                                            in={data.open}
-                                            timeout="auto"
-                                            unmountOnExit
-                                        >
-                                            {!data.single && (
-                                                <>
-                                                    <List
-                                                        component="div"
-                                                        disablePadding
-                                                        sx={{
-                                                            ...(!open && {
-                                                                display: "none",
-                                                            }),
+                                                    {data.icon}
+                                                </ListItemIcon>
+                                                <ListItemText
+                                                    sx={{
+                                                        opacity: open ? 1 : 0,
+                                                    }}
+                                                >
+                                                    <Typography
+                                                        variant="body1"
+                                                        style={{
+                                                            fontSize: 14,
+                                                            fontWeight: "bold",
+                                                            color: "#1C3055",
                                                         }}
                                                     >
-                                                        {menu.map(
-                                                            (menu, key) => (
-                                                                <ListItemButton
-                                                                    key={key}
-                                                                    onClick={
-                                                                        menu.action
-                                                                    }
+                                                        {data.name}
+                                                    </Typography>
+                                                </ListItemText>
+                                                {data.name != "Dashboard" &&
+                                                    data.name !=
+                                                        "Activity Logs" && (
+                                                        <>
+                                                            {data.open ? (
+                                                                <ExpandLessRounded
                                                                     sx={{
-                                                                        backgroundColor:
-                                                                            location.pathname ==
-                                                                            menu.location
-                                                                                ? "#EFF1F4"
-                                                                                : "#FFF",
+                                                                        ...(!open && {
+                                                                            display:
+                                                                                "none",
+                                                                        }),
                                                                     }}
-                                                                >
-                                                                    <ListItemIcon />
-                                                                    <ListItemText>
-                                                                        <Typography
-                                                                            variant="body1"
-                                                                            style={{
-                                                                                fontSize: 12,
-                                                                                color: "#1C3055",
-                                                                                fontWeight:
-                                                                                    location.pathname ==
-                                                                                    menu.location
-                                                                                        ? "bold"
-                                                                                        : "normal",
-                                                                            }}
-                                                                        >
-                                                                            {
-                                                                                menu.name
-                                                                            }
-                                                                        </Typography>
-                                                                    </ListItemText>
-                                                                </ListItemButton>
-                                                            )
-                                                        )}
-                                                    </List>
-                                                </>
-                                            )}
-                                        </Collapse>
-                                        <Divider
-                                            sx={{
-                                                ...(!open && {
-                                                    display: "none",
-                                                }),
-                                            }}
-                                        />
-                                    </ListItem>
-                                );
+                                                                />
+                                                            ) : (
+                                                                <ExpandMoreRounded
+                                                                    sx={{
+                                                                        ...(!open && {
+                                                                            display:
+                                                                                "none",
+                                                                        }),
+                                                                    }}
+                                                                />
+                                                            )}
+                                                        </>
+                                                    )}
+                                            </ListItemButton>
+
+                                            <Collapse
+                                                in={data.open}
+                                                timeout="auto"
+                                                unmountOnExit
+                                            >
+                                                {!data.single && (
+                                                    <>
+                                                        <List
+                                                            component="div"
+                                                            disablePadding
+                                                            sx={{
+                                                                ...(!open && {
+                                                                    display:
+                                                                        "none",
+                                                                }),
+                                                            }}
+                                                        >
+                                                            {menu.map(
+                                                                (menu, key) => (
+                                                                    <ListItemButton
+                                                                        key={
+                                                                            key
+                                                                        }
+                                                                        onClick={
+                                                                            menu.action
+                                                                        }
+                                                                        sx={{
+                                                                            backgroundColor:
+                                                                                location.pathname ==
+                                                                                menu.location
+                                                                                    ? "#EFF1F4"
+                                                                                    : "#FFF",
+                                                                        }}
+                                                                    >
+                                                                        <ListItemIcon />
+                                                                        <ListItemText>
+                                                                            <Typography
+                                                                                variant="body1"
+                                                                                style={{
+                                                                                    fontSize: 12,
+                                                                                    color: "#1C3055",
+                                                                                    fontWeight:
+                                                                                        location.pathname ==
+                                                                                        menu.location
+                                                                                            ? "bold"
+                                                                                            : "normal",
+                                                                                }}
+                                                                            >
+                                                                                {
+                                                                                    menu.name
+                                                                                }
+                                                                            </Typography>
+                                                                        </ListItemText>
+                                                                    </ListItemButton>
+                                                                )
+                                                            )}
+                                                        </List>
+                                                    </>
+                                                )}
+                                            </Collapse>
+                                            <Divider
+                                                sx={{
+                                                    ...(!open && {
+                                                        display: "none",
+                                                    }),
+                                                }}
+                                            />
+                                        </ListItem>
+                                    );
+                                }
                             })}
                         </List>
                     </Box>

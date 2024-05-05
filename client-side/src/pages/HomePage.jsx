@@ -9,7 +9,8 @@ import {
 import isfsImg from "../assets/images/isfs.jpg";
 import awrImg from "../assets/images/awardees.jpg";
 const HomePage = () => {
-    const { token, users, districts, estates, isfs, awardees } = useData();
+    const { token, users, districts, estates, isfs, awardees, setToken } =
+        useData();
 
     if (token == null) {
         return <Navigate to={"/login"} />;
