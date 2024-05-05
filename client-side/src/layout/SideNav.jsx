@@ -557,9 +557,14 @@ const SideNav = ({
                                                                                             : "normal",
                                                                                 }}
                                                                             >
-                                                                                {
-                                                                                    menu.name
-                                                                                }
+                                                                                {menu.name
+                                                                                    .charAt(
+                                                                                        0
+                                                                                    )
+                                                                                    .toUpperCase() +
+                                                                                    menu.name.slice(
+                                                                                        1
+                                                                                    )}
                                                                             </Typography>
                                                                         </ListItemText>
                                                                     </ListItemButton>

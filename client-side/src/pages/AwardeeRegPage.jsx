@@ -198,7 +198,7 @@ const AwardeeRegPage = () => {
 
                       return createData(
                           id,
-                          name,
+                          name.charAt(0).toUpperCase() + name.slice(1),
                           members,
                           amortization,
                           arrears,

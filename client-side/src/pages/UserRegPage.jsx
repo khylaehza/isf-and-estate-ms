@@ -228,9 +228,11 @@ const UserRegPage = () => {
                           email,
                           updated_at,
                       } = dataMap;
-                      let name = `${fname} ${
-                          mname ? `${mname.charAt(0)}.` : " "
-                      } ${lname}`;
+                      let name = `${
+                          fname.charAt(0).toUpperCase() + fname.slice(1)
+                      } ${mname ? `${mname.charAt(0).toUpperCase()}.` : " "} ${
+                          lname.charAt(0).toUpperCase() + lname.slice(1)
+                      }`;
 
                       let mnameVal = mname ? mname : " ";
                       return createData(

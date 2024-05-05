@@ -9,7 +9,7 @@ import {
 import isfsImg from "../assets/images/isfs.jpg";
 import awrImg from "../assets/images/awardees.jpg";
 const HomePage = () => {
-    const { token, users, districts, estates, isfs, awardees, setToken } =
+    const { token, users, districts, estates, isfs, awardees, curUserRole } =
         useData();
 
     if (token == null) {
@@ -57,185 +57,206 @@ const HomePage = () => {
 
     return (
         <Box gap={2} display={"flex"} flexDirection={"column"}>
-            <Grid
-                container
-                padding={2}
-                columns={{ xs: 6, sm: 12 }}
-                columnSpacing={3}
-                color={"#FFF"}
-            >
-                {items.map((item, key) => (
-                    <Grid item xs={2} sm={4} key={key}>
+            {["Super Admin"].includes(curUserRole) && (
+                <Grid
+                    container
+                    padding={2}
+                    columns={{ xs: 2, sm: 2, md: 12 }}
+                    columnSpacing={3}
+                    color={"#FFF"}
+                    gap={{ xs: 1, md: 0 }}
+                >
+                    {items.map((item, key) => (
+                        <Grid item xs={2} sm={4} key={key}>
+                            <Box
+                                bgcolor={item.color}
+                                px={5}
+                                py={3}
+                                borderRadius={2}
+                                display={"flex"}
+                                flexDirection={"row"}
+                                gap={2}
+                                width={"100%"}
+                                alignItems={"center"}
+                                boxShadow={4}
+                            >
+                                <Box
+                                    display={"flex"}
+                                    flexDirection={"column"}
+                                    alignItems={"flex-start"}
+                                    width={"70%"}
+                                >
+                                    <Typography
+                                        fontSize={48}
+                                        fontWeight={"bold"}
+                                        marginBottom={-1}
+                                    >
+                                        {item.quan}
+                                    </Typography>
+                                    <Typography
+                                        sx={{
+                                            fontSize: 24,
+                                            fontWeight: "medium",
+                                        }}
+                                    >
+                                        {item.name}
+                                    </Typography>
+                                </Box>
+                                <Box alignItems={"flex-end"} width={"30%"}>
+                                    {item.icon}
+                                </Box>
+                            </Box>
+                        </Grid>
+                    ))}
+                </Grid>
+            )}
+
+            {["Super Admin", "Admin", "ISF Admin", "Estate Admin"].includes(
+                curUserRole
+            ) && (
+                <Box display={"flex"} flexDirection={"row"} width={"100%"}>
+                    {["Super Admin", "Admin", "ISF Admin"].includes(
+                        curUserRole
+                    ) && (
                         <Box
-                            bgcolor={item.color}
-                            px={5}
-                            py={3}
+                            bgcolor={"#3F6B45"}
+                            mx={2}
+                            padding={2}
                             borderRadius={2}
-                            display={"flex"}
-                            flexDirection={"row"}
-                            gap={2}
-                            width={"100%"}
-                            alignItems={"center"}
+                            width={"50%"}
                             boxShadow={4}
                         >
-                            <Box
-                                display={"flex"}
-                                flexDirection={"column"}
-                                alignItems={"flex-start"}
-                                width={"70%"}
+                            <img
+                                src={isfsImg}
+                                alt="ISF Image"
+                                width={"100%"}
+                                height={210}
+                                style={{
+                                    objectFit: "cover",
+                                    borderRadius: 5,
+                                }}
+                            />
+                            <Grid
+                                container
+                                columns={{ xs: 6, sm: 12 }}
+                                columnSpacing={3}
+                                rowGap={2}
                             >
-                                <Typography
-                                    fontSize={48}
-                                    fontWeight={"bold"}
-                                    marginBottom={-1}
-                                >
-                                    {item.quan}
-                                </Typography>
-                                <Typography
-                                    sx={{ fontSize: 24, fontWeight: "medium" }}
-                                >
-                                    {item.name}
-                                </Typography>
-                            </Box>
-                            <Box alignItems={"flex-end"} width={"30%"}>
-                                {item.icon}
-                            </Box>
+                                <Grid item xs={12}>
+                                    <Typography
+                                        sx={{
+                                            fontSize: 24,
+                                            fontWeight: "medium",
+                                            color: "#D7B73F",
+                                        }}
+                                    >
+                                        Informal Settlers Family (ISFs)
+                                    </Typography>
+                                </Grid>
+
+                                {Object.keys(countPerDistrict).map(
+                                    (dst, key) => (
+                                        <Grid
+                                            item
+                                            xs={12}
+                                            sm={6}
+                                            md={4}
+                                            lg={2}
+                                            key={key}
+                                        >
+                                            <Box
+                                                bgcolor={"#FFF"}
+                                                p={2}
+                                                borderRadius={2}
+                                                display={"flex"}
+                                                flexDirection={"row"}
+                                                width={"100%"}
+                                                alignItems={"center"}
+                                                boxShadow={4}
+                                                justifyContent={"space-between"}
+                                            >
+                                                <Typography>
+                                                    District {dst}
+                                                </Typography>
+                                                <Typography>
+                                                    {countPerDistrict[dst]}
+                                                </Typography>
+                                            </Box>
+                                        </Grid>
+                                    )
+                                )}
+                            </Grid>
                         </Box>
-                    </Grid>
-                ))}
-            </Grid>
+                    )}
 
-            <Box display={"flex"} flexDirection={"row"} width={"100%"}>
-                <Box
-                    bgcolor={"#3F6B45"}
-                    mx={2}
-                    padding={2}
-                    borderRadius={2}
-                    width={"50%"}
-                    boxShadow={4}
-                >
-                    <img
-                        src={isfsImg}
-                        alt="ISF Image"
-                        width={"100%"}
-                        height={210}
-                        style={{ objectFit: "cover", borderRadius: 5 }}
-                    />
-                    <Grid
-                        container
-                        columns={{ xs: 6, sm: 12 }}
-                        columnSpacing={3}
-                        rowGap={2}
-                    >
-                        <Grid item xs={12}>
-                            <Typography
-                                sx={{
-                                    fontSize: 24,
-                                    fontWeight: "medium",
-                                    color: "#D7B73F",
-                                }}
-                            >
-                                Informal Settlers Family (ISFs)
-                            </Typography>
-                        </Grid>
-
-                        {Object.keys(countPerDistrict).map((dst, key) => (
+                    {["Super Admin", "Admin", "Estate Admin"].includes(
+                        curUserRole
+                    ) && (
+                        <Box
+                            bgcolor={"#1C3055"}
+                            mx={2}
+                            padding={2}
+                            borderRadius={2}
+                            width={"50%"}
+                            boxShadow={4}
+                        >
+                            <img
+                                src={awrImg}
+                                alt="Estate Image"
+                                width={"100%"}
+                                height={210}
+                                style={{ objectFit: "cover", borderRadius: 5 }}
+                            />
                             <Grid
-                                item
-                                xs={2}
-                                sm={
-                                    Object.keys(countPerDistrict).length > 2
-                                        ? 4
-                                        : 6
-                                }
-                                key={key}
+                                container
+                                columns={{ xs: 6, sm: 12 }}
+                                columnSpacing={3}
+                                rowGap={2}
                             >
-                                <Box
-                                    bgcolor={"#FFF"}
-                                    p={2}
-                                    borderRadius={2}
-                                    display={"flex"}
-                                    flexDirection={"row"}
-                                    width={"100%"}
-                                    alignItems={"center"}
-                                    boxShadow={4}
-                                    justifyContent={"space-between"}
-                                >
-                                    <Typography>District {dst}</Typography>
-                                    <Typography>
-                                        {countPerDistrict[dst]}
+                                <Grid item xs={12}>
+                                    <Typography
+                                        sx={{
+                                            fontSize: 24,
+                                            fontWeight: "medium",
+                                            color: "#D7B73F",
+                                        }}
+                                    >
+                                        Estate Awardees
                                     </Typography>
-                                </Box>
-                            </Grid>
-                        ))}
-                    </Grid>
-                </Box>
+                                </Grid>
 
-                <Box
-                    bgcolor={"#1C3055"}
-                    mx={2}
-                    padding={2}
-                    borderRadius={2}
-                    width={"50%"}
-                    boxShadow={4}
-                >
-                    <img
-                        src={awrImg}
-                        alt="Estate Image"
-                        width={"100%"}
-                        height={210}
-                        style={{ objectFit: "cover", borderRadius: 5 }}
-                    />
-                    <Grid
-                        container
-                        columns={{ xs: 6, sm: 12 }}
-                        columnSpacing={3}
-                        rowGap={2}
-                    >
-                        <Grid item xs={12}>
-                            <Typography
-                                sx={{
-                                    fontSize: 24,
-                                    fontWeight: "medium",
-                                    color: "#D7B73F",
-                                }}
-                            >
-                                Estate Awardees
-                            </Typography>
-                        </Grid>
-
-                        {Object.keys(countPerEstate).map((est, key) => (
-                            <Grid
-                                item
-                                xs={2}
-                                sm={
-                                    Object.keys(countPerEstate).length > 2
-                                        ? 4
-                                        : 6
-                                }
-                                key={key}
-                            >
-                                <Box
-                                    bgcolor={"#FFF"}
-                                    p={2}
-                                    borderRadius={2}
-                                    display={"flex"}
-                                    flexDirection={"row"}
-                                    width={"100%"}
-                                    alignItems={"center"}
-                                    boxShadow={4}
-                                    justifyContent={"space-between"}
-                                >
-                                    <Typography>{est}</Typography>
-                                    <Typography>
-                                        {countPerEstate[est]}
-                                    </Typography>
-                                </Box>
+                                {Object.keys(countPerEstate).map((est, key) => (
+                                    <Grid
+                                        item
+                                        xs={12}
+                                        sm={6}
+                                        md={4}
+                                        lg={2}
+                                        key={key}
+                                    >
+                                        <Box
+                                            bgcolor={"#FFF"}
+                                            p={2}
+                                            borderRadius={2}
+                                            display={"flex"}
+                                            flexDirection={"row"}
+                                            width={"100%"}
+                                            alignItems={"center"}
+                                            boxShadow={4}
+                                            justifyContent={"space-between"}
+                                        >
+                                            <Typography>{est}</Typography>
+                                            <Typography>
+                                                {countPerEstate[est]}
+                                            </Typography>
+                                        </Box>
+                                    </Grid>
+                                ))}
                             </Grid>
-                        ))}
-                    </Grid>
+                        </Box>
+                    )}
                 </Box>
-            </Box>
+            )}
         </Box>
     );
 };

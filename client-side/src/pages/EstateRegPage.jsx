@@ -116,18 +116,18 @@ const EstateRegPage = () => {
         {
             id: "brgy",
             label: "Brgy",
-            minWidth: 140,
+            minWidth: 70,
         },
         {
             id: "housingQuan",
             label: "No. of Housing",
-            minWidth: 170,
+            minWidth: 70,
         },
-        // {
-        //     id: "sqm",
-        //     label: "SQM",
-        //     minWidth: 170,
-        // },
+        {
+            id: "sqm",
+            label: "SQM",
+            minWidth: 40,
+        },
 
         {
             id: "status",
@@ -144,8 +144,8 @@ const EstateRegPage = () => {
         zone,
         district,
         housingQuan,
-        status
-        // sqm
+        status,
+        sqm
     ) {
         return {
             id,
@@ -156,7 +156,7 @@ const EstateRegPage = () => {
             district,
             housingQuan,
             status,
-            // sqm,
+            sqm,
         };
     }
 
@@ -187,21 +187,22 @@ const EstateRegPage = () => {
                           district,
                           housingQuan,
                           status,
+
+                          sqm,
                           updated_at,
-                          //  sqm,
                       } = dataMap;
 
                       return createData(
                           id,
-                          name,
-                          address,
+                          name.charAt(0).toUpperCase() + name.slice(1),
+                          address.charAt(0).toUpperCase() + address.slice(1),
                           brgy,
                           zone,
                           district,
                           housingQuan,
                           status,
+                          sqm,
                           updated_at
-                          //   sqm
                       );
                   })
             : [];
