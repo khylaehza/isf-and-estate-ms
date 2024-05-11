@@ -19,7 +19,7 @@ const ISFRegPage = () => {
     const [variant, setVariant] = useState("");
     const [message, setMessage] = useState("");
 
-    const { districts, setISFs, isfs } = useData();
+    const { districts, setISFs, isfs, curUser } = useData();
     const districtInfo = districts.find(
         (dst) => `district${dst.name}` === name
     );
@@ -93,15 +93,28 @@ const ISFRegPage = () => {
                 .then((data) => {
                     if (data.status == 200 || data.status == 201) {
                         setISFs([...isfs, data.data]);
-                        setVariant("success");
-                        setMessage("ISF successfully added.");
-                        setOpenToast(true);
+
+                        axiosClient
+                            .post("/activity", {
+                                name: `${curUser.fname} ${curUser.lname}`,
+                                activity: `Added ${value.name} at ISF Registration.`,
+                                type: "Added",
+                            })
+                            .then((data) => {
+                                if (data.status == 200 || data.status == 201) {
+                                    setVariant("success");
+                                    setMessage("ISF successfully added.");
+                                    setOpenToast(true);
+                                } else {
+                                    console.log(data.data.message);
+                                }
+                            });
                     } else {
                         console.log(data.data.message);
                     }
                 })
                 .catch((error) => {
-                    setVariant(error.response.data.message);
+                    setVariant('error');
                     setMessage(error.response.data.message);
                     setOpenToast(true);
                     console.log(error);
@@ -125,9 +138,22 @@ const ISFRegPage = () => {
                                 isf.id === data.data.id ? data.data : isf
                             )
                         );
-                        setVariant("success");
-                        setMessage("ISF successfully edited.");
-                        setOpenToast(true);
+
+                        axiosClient
+                            .post("/activity", {
+                                name: `${curUser.fname} ${curUser.lname}`,
+                                activity: `Edited ${value.name} at ISF Registration.`,
+                                type: "Edited",
+                            })
+                            .then((data) => {
+                                if (data.status == 200 || data.status == 201) {
+                                    setVariant("success");
+                                    setMessage("ISF successfully edited.");
+                                    setOpenToast(true);
+                                } else {
+                                    console.log(data.data.message);
+                                }
+                            });
                     } else {
                         console.log(data.message);
                     }
@@ -271,9 +297,22 @@ const ISFRegPage = () => {
             .then(() => {
                 setISFs(isfs.filter((isf) => isf.id !== curRow.id));
                 setOpenDel(false);
-                setVariant("success");
-                setMessage("ISF successfully deleted.");
-                setOpenToast(true);
+
+                axiosClient
+                    .post("/activity", {
+                        name: `${curUser.fname} ${curUser.lname}`,
+                        activity: `Deleted ${curRow.name} at ISF Registration.`,
+                        type: "Deleted",
+                    })
+                    .then((data) => {
+                        if (data.status == 200 || data.status == 201) {
+                            setVariant("success");
+                            setMessage("ISF successfully deleted.");
+                            setOpenToast(true);
+                        } else {
+                            console.log(data.data.message);
+                        }
+                    });
             })
             .catch((error) => {
                 setVariant("error");

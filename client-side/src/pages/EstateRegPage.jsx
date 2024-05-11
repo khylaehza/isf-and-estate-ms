@@ -15,7 +15,7 @@ const EstateRegPage = () => {
     const [curFilter, setCurFilter] = useState("All");
     const [variant, setVariant] = useState("");
     const [message, setMessage] = useState("");
-    const { estates, setEstates } = useData();
+    const { estates, setEstates, curUser } = useData();
 
     const [curRow, setCurRow] = useState({
         name: "",
@@ -58,9 +58,22 @@ const EstateRegPage = () => {
                 .then((data) => {
                     if (data.status == 200 || data.status == 201) {
                         setEstates([...estates, data.data]);
-                        setVariant("success");
-                        setMessage("Estate successfully added.");
-                        setOpenToast(true);
+
+                        axiosClient
+                            .post("/activity", {
+                                name: `${curUser.fname} ${curUser.lname}`,
+                                activity: `Added ${value.name} at Estate Registration.`,
+                                type: "Added",
+                            })
+                            .then((data) => {
+                                if (data.status == 200 || data.status == 201) {
+                                    setVariant("success");
+                                    setMessage("Estate successfully added.");
+                                    setOpenToast(true);
+                                } else {
+                                    console.log(data.data.message);
+                                }
+                            });
                     } else {
                         console.log(data.data.message);
                     }
@@ -88,9 +101,22 @@ const EstateRegPage = () => {
                                 estate.id === data.data.id ? data.data : estate
                             )
                         );
-                        setVariant("success");
-                        setMessage("Estate successfully edited.");
-                        setOpenToast(true);
+
+                        axiosClient
+                            .post("/activity", {
+                                name: `${curUser.fname} ${curUser.lname}`,
+                                activity: `Edited ${value.name} at Estate Registration.`,
+                                type: "Edited",
+                            })
+                            .then((data) => {
+                                if (data.status == 200 || data.status == 201) {
+                                    setVariant("success");
+                                    setMessage("Estate successfully edited.");
+                                    setOpenToast(true);
+                                } else {
+                                    console.log(data.data.message);
+                                }
+                            });
                     } else {
                         console.log(data.message);
                     }
@@ -213,9 +239,22 @@ const EstateRegPage = () => {
             .then(() => {
                 setEstates(estates.filter((estate) => estate.id !== curRow.id));
                 setOpenDel(false);
-                setVariant("success");
-                setMessage("Estate successfully deleted.");
-                setOpenToast(true);
+
+                axiosClient
+                    .post("/activity", {
+                        name: `${curUser.fname} ${curUser.lname}`,
+                        activity: `Deleted ${curRow.name} at Estate Registration.`,
+                        type: "Deleted",
+                    })
+                    .then((data) => {
+                        if (data.status == 200 || data.status == 201) {
+                            setVariant("success");
+                            setMessage("Estate successfully deleted.");
+                            setOpenToast(true);
+                        } else {
+                            console.log(data.data.message);
+                        }
+                    });
             })
             .catch((error) => {
                 setVariant("error");

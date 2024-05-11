@@ -18,7 +18,7 @@ const AwardeeRegPage = () => {
     const [variant, setVariant] = useState("");
     const [message, setMessage] = useState("");
 
-    const { estates, setAwardees, awardees } = useData();
+    const { estates, setAwardees, awardees , curUser} = useData();
     const estateInfo = estates.find((est) => `${est.name}` === name);
 
     const [curRow, setCurRow] = useState({
@@ -54,9 +54,21 @@ const AwardeeRegPage = () => {
                 .then((data) => {
                     if (data.status == 200 || data.status == 201) {
                         setAwardees([...awardees, data.data]);
-                        setVariant("success");
-                        setMessage("Estate successfully added.");
-                        setOpenToast(true);
+                        axiosClient
+                            .post("/activity", {
+                                name: `${curUser.fname} ${curUser.lname}`,
+                                activity: `Added ${value.name} at Awardee Registration.`,
+                                type: "Added",
+                            })
+                            .then((data) => {
+                                if (data.status == 200 || data.status == 201) {
+                                    setVariant("success");
+                                    setMessage("Estate successfully added.");
+                                    setOpenToast(true);
+                                } else {
+                                    console.log(data.data.message);
+                                }
+                            });
                     } else {
                         console.log(data.data.message);
                     }
@@ -93,9 +105,22 @@ const AwardeeRegPage = () => {
                                     : awardee
                             )
                         );
-                        setVariant("success");
-                        setMessage("Estate successfully edited.");
-                        setOpenToast(true);
+
+                        axiosClient
+                            .post("/activity", {
+                                name: `${curUser.fname} ${curUser.lname}`,
+                                activity: `Edited ${value.name} at Awardee Registration.`,
+                                type: "Edited",
+                            })
+                            .then((data) => {
+                                if (data.status == 200 || data.status == 201) {
+                                    setVariant("success");
+                                    setMessage("Awardee successfully edited.");
+                                    setOpenToast(true);
+                                } else {
+                                    console.log(data.data.message);
+                                }
+                            });
                     } else {
                         setVariant("error");
                         setMessage("No members added.");
@@ -218,9 +243,22 @@ const AwardeeRegPage = () => {
                     awardees.filter((awardee) => awardee.id !== curRow.id)
                 );
                 setOpenDel(false);
-                setVariant("success");
-                setMessage("Awardee successfully deleted.");
-                setOpenToast(true);
+
+                axiosClient
+                    .post("/activity", {
+                        name: `${curUser.fname} ${curUser.lname}`,
+                        activity: `Deleted ${curRow.name} at Awardee Registration.`,
+                        type: "Deleted",
+                    })
+                    .then((data) => {
+                        if (data.status == 200 || data.status == 201) {
+                            setVariant("success");
+                            setMessage("Awardee successfully deleted.");
+                            setOpenToast(true);
+                        } else {
+                            console.log(data.data.message);
+                        }
+                    });
             })
             .catch((error) => {
                 setVariant("error");

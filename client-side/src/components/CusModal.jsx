@@ -60,6 +60,7 @@ const CusModal = ({
                                     fontSize={16}
                                     fontWeight={"medium"}
                                     gutterBottom
+                                    color={'#000'}
                                 >
                                     {label}
                                 </Typography>

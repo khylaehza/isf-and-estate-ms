@@ -261,7 +261,7 @@ const UserRegPage = () => {
                     .post("/activity", {
                         name: `${curUser.fname} ${curUser.lname}`,
                         activity: `Deleted ${curRow.fname} ${curRow.lname} at User Registration.`,
-                        type: "Deleteed",
+                        type: "Deleted",
                     })
                     .then((data) => {
                         if (data.status == 200 || data.status == 201) {
@@ -270,7 +270,7 @@ const UserRegPage = () => {
                             setMessage("User successfully deleted.");
                             setOpenToast(true);
                         } else {
-                            console.log(data.data.message);
+                            console.log(data);
                         }
                     });
             })

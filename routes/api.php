@@ -13,6 +13,7 @@ use App\Http\Controllers\ActivityController;
 
 Route::post('register', [AuthController::class, 'register']);
 Route::post('login', [AuthController::class, 'login']);
+Route::post('forgot', [AuthController::class, 'forgot']);
 
 Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::resource('user', UserController::class);

@@ -11,7 +11,7 @@ import lgrclogo from "../assets/images/lgrclogo.png";
 import pilipinaslogo from "../assets/images/pilipinaslogo.png";
 import manilalogo from "../assets/images/manilalogo.png";
 import dilglogo from "../assets/images/dilglogo.png";
-import { CusLogInput, CusPrimBtn, CusThirdBtn } from "../components";
+import { CusLogInput, CusPrimBtn, CusThirdBtn, CusToast } from "../components";
 import {
     PersonRounded,
     LockRounded,
@@ -22,15 +22,19 @@ import { useData } from "../DataContext";
 import { Navigate } from "react-router-dom";
 import { useState } from "react";
 import axiosClient from "../axiosClient";
+import { ForgotPassForm } from "../forms";
 
 import { useFormik } from "formik";
 import * as Yup from "yup";
 
 const LoginPage = () => {
-    const { token, setToken, setRole, setCurUser } = useData();
+    const { token, setToken, setRole, setCurUser, users, setUsers } = useData();
     const [showPassword, setShowPassword] = useState(false);
     const [logError, setLogError] = useState("");
-
+    const [openForgot, setOpenForgot] = useState(false);
+    const [variant, setVariant] = useState("");
+    const [message, setMessage] = useState("");
+    const [openToast, setOpenToast] = useState(false);
     const handleShowPass = () => setShowPassword((show) => !show);
 
     const handleMouseDown = (event) => {
@@ -64,6 +68,67 @@ const LoginPage = () => {
                     console.log(error);
                 });
 
+            actions.resetForm();
+        },
+    });
+
+    const forgotForm = useFormik({
+        initialValues: {
+            email: "",
+            password: "",
+            conpass: "",
+        },
+        validationSchema: Yup.object({
+            email: Yup.string().required("Email is required."),
+            password: Yup.string().required("New Password is required."),
+            conpass: Yup.string().required("Confirm new password is required."),
+        }),
+        onSubmit: (value, actions) => {
+            // const match = users.filter((user) =>
+            //     user.email === value.email ? user.id : null
+            // );
+
+            if (value.password == value.conpass) {
+                // if (match) {
+                    axiosClient
+                        .post(`/forgot`, {
+                            email: value.email,
+                            password: value.password,
+                        })
+                        .then((data) => {
+                            if (data.status == 200 || data.status == 201) {
+                                setUsers(
+                                    users.map((user) =>
+                                        user.id === data.data.id
+                                            ? data.data
+                                            : user
+                                    )
+                                );
+                                setVariant("success");
+                                setMessage("Password successfully changed.");
+                                setOpenToast(true);
+                                setOpenForgot(false)
+                            } else {
+                                console.log(data.data.message);
+                            }
+                        })
+                        .catch((error) => {
+                            console.log(error)
+                            setVariant("error");
+                            setMessage(error.response.data.message);
+                            setOpenToast(true);
+                            setOpenForgot(false);
+                        });
+                // } else {
+                //     setVariant("error");
+                //     setMessage("Email is not registered.");
+                //     setOpenToast(true);
+                // }
+            } else {
+                setVariant("error");
+                setMessage("Password does not match.");
+                setOpenToast(true);
+            }
             actions.resetForm();
         },
     });
@@ -231,7 +296,25 @@ const LoginPage = () => {
                                     >
                                         <CusThirdBtn
                                             label="Forgot Password?"
-                                            type="submit"
+                                            type="button"
+                                            action={() => setOpenForgot(true)}
+                                        />
+
+                                        <ForgotPassForm
+                                            label={"Change Password?"}
+                                            form={forgotForm}
+                                            open={openForgot}
+                                            setOpen={setOpenForgot}
+                                            action={() => {
+                                                setOpenForgot(false);
+                                                form.resetForm();
+                                            }}
+                                        />
+                                        <CusToast
+                                            variant={variant}
+                                            message={message}
+                                            openToast={openToast}
+                                            setOpenToast={setOpenToast}
                                         />
                                     </Stack>
                                     <Stack

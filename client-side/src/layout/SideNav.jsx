@@ -605,17 +605,18 @@ const SideNav = ({
                             }}
                         >
                             <img
-                                src={pilipinaslogo}
-                                alt="Bagong Pilipinas Logo"
-                                width={open ? "35%" : "80%"}
-                                height={"100%"}
-                            />
-                            <img
                                 src={manilalogo}
                                 alt="Manila Logo"
                                 width={open ? "25%" : "60%"}
                                 height={"100%"}
                             />
+                            <img
+                                src={pilipinaslogo}
+                                alt="Bagong Pilipinas Logo"
+                                width={open ? "35%" : "80%"}
+                                height={"100%"}
+                            />
+
                             <img
                                 src={dilglogo}
                                 alt="DILG Logo"

@@ -88,6 +88,32 @@ class AuthController extends Controller
         ]);
     }
 
+    public function forgot(Request $request)
+    {
+        $request->validate([
+            'email' => 'required|email',
+            'password' => 'required|string', 
+        ]);
+
+        $user = User::where('email', $request->email)->first();
+
+        if (!$user) {
+            return response()->json([
+                'status' => false,
+                'message' => 'Email not found.',
+            ], 404);
+        }
+
+        $user->password = bcrypt($request->password);
+        $user->save();
+
+        return response()->json([
+            'status' => true,
+            'message' => 'Password updated successfully.',
+            'data' =>  $user
+        ]);
+    }
+
     public function logout()
     {
         auth()->user()->tokens()->delete();

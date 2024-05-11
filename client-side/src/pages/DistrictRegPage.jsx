@@ -16,7 +16,7 @@ const DistrictRegPage = () => {
     const [curFilter, setCurFilter] = useState("All");
     const [variant, setVariant] = useState("");
     const [message, setMessage] = useState("");
-    const { districts, setDistricts } = useData();
+    const { districts, setDistricts, curUser } = useData();
 
     const [curRow, setCurRow] = useState({
         name: "",
@@ -61,15 +61,29 @@ const DistrictRegPage = () => {
                     if (data.status == 200 || data.status == 201) {
                         setDistricts([...districts, data.data]);
 
-                        setVariant("success");
-                        setMessage("District successfully added.");
-                        setOpenToast(true);
+                        axiosClient
+                            .post("/activity", {
+                                name: `${curUser.fname} ${curUser.lname}`,
+                                activity: `Added ${value.name} at District Registration.`,
+                                type: "Added",
+                            })
+                            .then((data) => {
+                             
+                                if (data.status == 200 || data.status == 201) {
+                                    setVariant("success");
+                                    setMessage("District successfully added.");
+                                    setOpenToast(true);
+                                } else {
+                                    console.log(data.data.message);
+                                }
+                            })
                     } else {
                         console.log(data.data.message);
                     }
                 })
                 .catch((error) => {
                     setVariant("error");
+                    console.log(error)
                     setMessage(error.response.data.message);
                     setOpenToast(true);
                 });
@@ -94,15 +108,32 @@ const DistrictRegPage = () => {
                             )
                         );
 
-                        setVariant("success");
-                        setMessage("District successfully edited.");
-                        setOpenToast(true);
+                        axiosClient
+                            .post("/activity", {
+                                name: `${curUser.fname} ${curUser.lname}`,
+                                activity: `Edited ${value.name} at District Registration.`,
+                                type: "Edited",
+                            })
+                            .then((data) => {
+                            
+                                if (data.status == 200 || data.status == 201) {
+                                    setVariant("success");
+                                    setMessage("District successfully edited.");
+                                    setOpenToast(true);
+                                } else {
+                                    console.log(data)
+                                    console.log(data.data.message);
+                                }
+                            }).catch((err => {
+                                console.log(err)
+                            }));
                     } else {
                         console.log(data.message);
                     }
                 })
                 .catch((error) => {
                     setVariant("error");
+                    console.log(error)
                     setMessage(error.response.data.message);
                     setOpenToast(true);
                 });
@@ -203,12 +234,27 @@ const DistrictRegPage = () => {
                     districts.filter((district) => district.id !== curRow.id)
                 );
                 setOpenDel(false);
-                setVariant("success");
-                setMessage("District successfully deleted.");
-                setOpenToast(true);
+
+                axiosClient
+                    .post("/activity", {
+                        name: `${curUser.fname} ${curUser.lname}`,
+                        activity: `Deleted ${curRow.name} at District Registration.`,
+                        type: "Deleted",
+                    })
+                    .then((data) => {
+                    
+                        if (data.status == 200 || data.status == 201) {
+                            setVariant("success");
+                            setMessage("District successfully deleted.");
+                            setOpenToast(true);
+                        } else {
+                            console.log(data.data.message);
+                        }
+                    });
             })
             .catch((error) => {
                 setVariant("error");
+                console.log(error)
                 setMessage(error.response.data.message);
                 setOpenToast(true);
             });

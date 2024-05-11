@@ -113,7 +113,7 @@ const ISFForms = ({
                             disabled={disabled}
                         />
                     </Grid>
-                    <Grid item xs={2} sm={4} md={3.2}>
+                    <Grid item xs={2} sm={2.5} >
                         <CusFormInput
                             name="bday"
                             label="Date of Birth"
@@ -128,7 +128,7 @@ const ISFForms = ({
                             type={"date"}
                         />
                     </Grid>
-                    <Grid item xs={2} sm={4} md={2.8}>
+                    <Grid item xs={2} sm={3.5}>
                         <CusFormInput
                             name="childQuan"
                             label="No. Of Children"

@@ -3,7 +3,21 @@ import { useState } from "react";
 import axiosClient from "../axiosClient";
 import { useNavigate } from "react-router-dom";
 import { Person } from "@mui/icons-material";
-const CusMenu = ({ setToken, setCurUser, setRole }) => {
+import { ForgotPassForm } from "../forms";
+import CusToast from "./CusToast";
+import { useFormik } from "formik";
+import * as Yup from "yup";
+
+import { useData } from "../DataContext";
+const CusMenu = () => {
+    const { setToken, setRole, setCurUser, users, setUsers, curUser } =
+        useData();
+
+    const [openForgot, setOpenForgot] = useState(false);
+    const [variant, setVariant] = useState("");
+    const [message, setMessage] = useState("");
+    const [openToast, setOpenToast] = useState(false);
+
     const [anchorEl, setAnchorEl] = useState(null);
     const navigate = useNavigate();
     const open = Boolean(anchorEl);
@@ -11,6 +25,11 @@ const CusMenu = ({ setToken, setCurUser, setRole }) => {
         setAnchorEl(event.currentTarget);
     };
     const handleClose = () => {
+        setAnchorEl(null);
+    };
+
+    const handleForgot = () => {
+        setOpenForgot(true);
         setAnchorEl(null);
     };
 
@@ -24,6 +43,53 @@ const CusMenu = ({ setToken, setCurUser, setRole }) => {
             navigate("/login");
         });
     };
+
+    const forgotForm = useFormik({
+        initialValues: {
+            email: curUser.email,
+            password: "",
+            conpass: "",
+        },
+        enableReinitialize: true,
+        validationSchema: Yup.object({
+            password: Yup.string().required("New Password is required."),
+            conpass: Yup.string().required("Confirm new password is required."),
+        }),
+        onSubmit: (value, actions) => {
+            if (value.password == value.conpass) {
+                axiosClient
+                    .post(`/user/${curUser.id}`, {
+                        password: value.password,
+                        _method: "PUT",
+                    })
+                    .then((data) => {
+                        
+                        if (data.status == 200 || data.status == 201) {
+                            setCurUser({
+                                ...curUser,
+                                password: value.password,
+                            });
+                            setVariant("success");
+                            setMessage("User successfully edited.");
+                            setOpenToast(true);
+                        } else {
+                            console.log(data.data.message);
+                        }
+                    })
+                    .catch((error) => {
+                        setVariant("error");
+                        setMessage(error.response.data.message);
+                        setOpenToast(true);
+                    });
+                    setOpenForgot(false);
+            } else {
+                setVariant("error");
+                setMessage("Password does not match.");
+                setOpenToast(true);
+            }
+            actions.resetForm();
+        },
+    });
 
     return (
         <>
@@ -49,13 +115,31 @@ const CusMenu = ({ setToken, setCurUser, setRole }) => {
                 }}
                 sx={{ fontSize: 12 }}
             >
-                <MenuItem onClick={handleClose} sx={{ fontSize: 12 }}>
+                <MenuItem onClick={handleForgot} sx={{ fontSize: 12 }}>
                     Change Password
                 </MenuItem>
                 <MenuItem onClick={handleLogOut} sx={{ fontSize: 12 }}>
                     Logout
                 </MenuItem>
             </Menu>
+
+            <ForgotPassForm
+                label={"Change Password?"}
+                form={forgotForm}
+                open={openForgot}
+                setOpen={setOpenForgot}
+                action={() => {
+                    setOpenForgot(false);
+                    forgotForm.resetForm();
+                }}
+                method={'EDIT'}
+            />
+            <CusToast
+                variant={variant}
+                message={message}
+                openToast={openToast}
+                setOpenToast={setOpenToast}
+            />
         </>
     );
 };

@@ -45,12 +45,12 @@ const NotFoundPage = () => {
                     </Typography>
                     <CusIconBtn
                         icon={<ArrowLeftOutlined />}
-                        text={"Go Back"}
+                        text={"Go to Homepage"}
                         type="button"
-                        w={120}
+                        w={200}
                         color={"#4C6085"}
                         hover={"#3C4D6C"}
-                        action={() => navigate(-1)}
+                        action={() => navigate('/')}
                     />
                 </Stack>
             </Stack>

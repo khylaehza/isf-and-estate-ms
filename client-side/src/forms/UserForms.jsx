@@ -95,7 +95,19 @@ const UserForms = ({
                         />
                     </Grid>
                     <Grid item xs={2} sm={4} md={4}>
-                        <CusSelect
+                        <CusFormInput
+                            name="department"
+                            label="Department"
+                            required={true}
+                            placeholder={"Eg. DILG Manila"}
+                            value={form.values.department}
+                            onChange={form.handleChange}
+                            onBlur={form.handleBlur}
+                            error={form.errors.department}
+                            touch={form.touched.department}
+                            disabled={disabled}
+                        />
+                        {/* <CusSelect
                             name="department"
                             label="Department"
                             required={true}
@@ -106,7 +118,7 @@ const UserForms = ({
                             error={form.errors.department}
                             touch={form.touched.department}
                             disabled={disabled}
-                        />
+                        /> */}
                     </Grid>
 
                     <Grid item xs={2} sm={4} md={4}>

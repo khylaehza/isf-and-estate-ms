@@ -13,9 +13,9 @@ const EstateForms = ({
     const { districts, brgys } = useData();
     const statList = [
         "Occupied by Awardees",
-        "Pending",
-        "Status 1",
-        "Status 2",
+        "Pending Occupation",
+        "Under Construction",
+        "Pending Construction",
     ];
 
     let dstList = [];
