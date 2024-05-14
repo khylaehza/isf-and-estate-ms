@@ -307,7 +307,7 @@ const LoginPage = () => {
                                             setOpen={setOpenForgot}
                                             action={() => {
                                                 setOpenForgot(false);
-                                                form.resetForm();
+                                                forgotForm.resetForm();
                                             }}
                                         />
                                         <CusToast

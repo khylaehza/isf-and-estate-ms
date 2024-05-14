@@ -113,7 +113,7 @@ const ISFForms = ({
                             disabled={disabled}
                         />
                     </Grid>
-                    <Grid item xs={2} sm={2.5} >
+                    <Grid item xs={2} sm={2.5}>
                         <CusFormInput
                             name="bday"
                             label="Date of Birth"
@@ -238,6 +238,7 @@ const ISFForms = ({
                         />
                     </Grid>
                     <Grid item xs={2} sm={4} md={6}>
+                        {/* php artisan:link */}
                         {method == "VIEW" ? (
                             <CusViewImg
                                 src={`${IMAGE_URL}isf/${form.values.imgLoc}`}
@@ -263,6 +264,7 @@ const ISFForms = ({
                                 touch={form.touched.imgLoc}
                                 disabled={disabled}
                                 type={method == "VIEW" ? "text" : "file"}
+                                required={true}
                             />
                         )}
                     </Grid>
